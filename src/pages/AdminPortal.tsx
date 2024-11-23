@@ -3,11 +3,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Users, Package, BarChart3, Settings, Edit3 } from "lucide-react";
+import { Users, Package, BarChart3, Settings, Edit3, CreditCard } from "lucide-react";
 
 const AdminPortal = () => {
   return (
-    <div className="min-h-screen bg-black p-8">
+    <div className="min-h-screen bg-black p-8 pl-72">
       <h1 className="text-3xl font-bold text-yellow-500 mb-8">Admin Portal</h1>
       
       <Tabs defaultValue="dashboard" className="space-y-6">
@@ -15,6 +15,7 @@ const AdminPortal = () => {
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="content">Content</TabsTrigger>
+          <TabsTrigger value="subscription-plans">Subscription Plans</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
 
@@ -90,6 +91,78 @@ const AdminPortal = () => {
               </Button>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="subscription-plans">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500 flex items-center gap-2">
+                  <CreditCard className="w-4 h-4" />
+                  Active Plans
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 border border-yellow-500/20 rounded">
+                    <div>
+                      <h3 className="font-semibold text-white">Basic Plan</h3>
+                      <p className="text-sm text-gray-400">$9.99/month</p>
+                    </div>
+                    <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
+                      Edit
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between p-4 border border-yellow-500/20 rounded">
+                    <div>
+                      <h3 className="font-semibold text-white">Pro Plan</h3>
+                      <p className="text-sm text-gray-400">$24.99/month</p>
+                    </div>
+                    <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
+                      Edit
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between p-4 border border-yellow-500/20 rounded">
+                    <div>
+                      <h3 className="font-semibold text-white">Enterprise Plan</h3>
+                      <p className="text-sm text-gray-400">$99.99/month</p>
+                    </div>
+                    <Button variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
+                      Edit
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Add New Plan</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form className="space-y-4">
+                  <div>
+                    <Label htmlFor="plan-name">Plan Name</Label>
+                    <Input id="plan-name" className="bg-black/60" />
+                  </div>
+                  <div>
+                    <Label htmlFor="plan-price">Monthly Price</Label>
+                    <Input id="plan-price" type="number" className="bg-black/60" />
+                  </div>
+                  <div>
+                    <Label htmlFor="plan-features">Features (one per line)</Label>
+                    <textarea
+                      id="plan-features"
+                      className="w-full min-h-[100px] bg-black/60 border border-yellow-500/20 rounded p-2 text-white"
+                    />
+                  </div>
+                  <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
+                    Add Plan
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
