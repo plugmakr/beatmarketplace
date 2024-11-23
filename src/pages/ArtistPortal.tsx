@@ -64,6 +64,39 @@ const ArtistPortal = () => {
               </Card>
             </div>
           </TabsContent>
+
+          <TabsContent value="beats">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">My Beats</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">No beats uploaded yet.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Analytics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Analytics data will appear here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="profile">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Profile Settings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Profile settings will appear here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
       </div>
     </div>

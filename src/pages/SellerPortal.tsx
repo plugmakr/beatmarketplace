@@ -1,7 +1,6 @@
 import PortalNavigation from "@/components/portal/PortalNavigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { DollarSign, ShoppingCart, Users, BarChart3 } from "lucide-react";
 
 const SellerPortal = () => {
@@ -69,6 +68,39 @@ const SellerPortal = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="orders">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Recent Orders</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">No orders to display.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="customers">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Customer List</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">No customers to display.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Analytics Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Analytics data will appear here.</p>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
