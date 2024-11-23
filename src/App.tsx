@@ -10,6 +10,9 @@ import HowItWorks from "./pages/HowItWorks";
 import BeatDetails from "./pages/BeatDetails";
 import KitDetails from "./pages/KitDetails";
 import ArtistProfile from "./pages/ArtistProfile";
+import AdminPortal from "./pages/AdminPortal";
+import ArtistPortal from "./pages/ArtistPortal";
+import SellerPortal from "./pages/SellerPortal";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +30,9 @@ const App = () => (
           <Route path="/beats/:id" element={<BeatDetails />} />
           <Route path="/kits/:id" element={<KitDetails />} />
           <Route path="/artists/:id" element={<ArtistProfile />} />
+          <Route path="/admin" element={<AdminPortal />} />
+          <Route path="/artist-portal" element={<ArtistPortal />} />
+          <Route path="/seller-portal" element={<SellerPortal />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
