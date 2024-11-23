@@ -1,4 +1,4 @@
-import Navigation from "@/components/landing/Navigation";
+import PortalNavigation from "@/components/portal/PortalNavigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import { Music2, BarChart3, Upload, Package } from "lucide-react";
 const ArtistPortal = () => {
   return (
     <div className="min-h-screen bg-black">
-      <Navigation />
+      <PortalNavigation />
       <div className="pl-64 p-8">
         <h1 className="text-3xl font-bold text-yellow-500 mb-8">Artist Portal</h1>
         
