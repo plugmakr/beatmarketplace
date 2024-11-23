@@ -9,6 +9,7 @@ import BrowseKits from "./pages/BrowseKits";
 import HowItWorks from "./pages/HowItWorks";
 import BeatDetails from "./pages/BeatDetails";
 import KitDetails from "./pages/KitDetails";
+import ArtistProfile from "./pages/ArtistProfile";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/how-it-works" element={<HowItWorks />} />
           <Route path="/beats/:id" element={<BeatDetails />} />
           <Route path="/kits/:id" element={<KitDetails />} />
+          <Route path="/artists/:id" element={<ArtistProfile />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

@@ -21,7 +21,35 @@ const BeatDetails = () => {
       "Tracked out stems",
       "Unlimited commercial use",
       "Instant delivery"
-    ]
+    ],
+    instruments: [
+      { name: "808 Bass", count: 1 },
+      { name: "Kicks", count: 2 },
+      { name: "Snares", count: 3 },
+      { name: "Hi-Hats", count: 4 },
+      { name: "Melodies", count: 2 }
+    ],
+    licensing: {
+      basic: {
+        name: "Basic License",
+        price: 29.99,
+        features: [
+          "MP3 File",
+          "Limited to 5000 streams",
+          "Non-commercial use only"
+        ]
+      },
+      premium: {
+        name: "Premium License",
+        price: 99.99,
+        features: [
+          "WAV File",
+          "Unlimited streams",
+          "Commercial use",
+          "Full trackouts"
+        ]
+      }
+    }
   };
 
   return (
@@ -60,26 +88,37 @@ const BeatDetails = () => {
             </div>
             <p className="text-gray-400">{beat.description}</p>
             <div className="bg-black/60 border border-yellow-500/20 rounded-lg p-6">
-              <h2 className="text-xl font-bold text-white mb-4">Features</h2>
-              <ul className="space-y-2">
-                {beat.features.map((feature, index) => (
-                  <li key={index} className="text-gray-400 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
-                    {feature}
-                  </li>
+              <h2 className="text-xl font-bold text-white mb-4">Instruments</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {beat.instruments.map((instrument, index) => (
+                  <div key={index} className="flex justify-between items-center">
+                    <span className="text-gray-400">{instrument.name}</span>
+                    <Badge variant="outline" className="text-yellow-500 border-yellow-500">
+                      x{instrument.count}
+                    </Badge>
+                  </div>
                 ))}
-              </ul>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-3xl font-bold text-yellow-500">${beat.price}</span>
-              <div className="flex gap-4">
-                <Button size="lg" className="bg-yellow-500 hover:bg-yellow-400 text-black">
-                  <Play className="w-5 h-5 mr-2" /> Preview
-                </Button>
-                <Button size="lg" variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
-                  <ShoppingCart className="w-5 h-5 mr-2" /> Add to Cart
-                </Button>
               </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {Object.values(beat.licensing).map((license, index) => (
+                <div key={index} className="bg-black/60 border border-yellow-500/20 rounded-lg p-6">
+                  <h3 className="text-lg font-bold text-white mb-2">{license.name}</h3>
+                  <p className="text-2xl font-bold text-yellow-500 mb-4">${license.price}</p>
+                  <ul className="space-y-2">
+                    {license.features.map((feature, idx) => (
+                      <li key={idx} className="text-gray-400 flex items-center gap-2">
+                        <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button className="w-full mt-4 bg-yellow-500 hover:bg-yellow-400 text-black">
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Purchase
+                  </Button>
+                </div>
+              ))}
             </div>
           </div>
         </div>

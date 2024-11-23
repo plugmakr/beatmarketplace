@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Navigation from "@/components/landing/Navigation";
 import { Button } from "@/components/ui/button";
-import { Play, FileAudio } from "lucide-react";
+import { FileAudio } from "lucide-react";
 
 const KitDetails = () => {
   const { id } = useParams();
@@ -65,7 +65,7 @@ const KitDetails = () => {
                     </div>
                     {category.preview && (
                       <Button size="sm" variant="outline" className="w-full border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
-                        <Play className="w-4 h-4 mr-2" /> Preview
+                        Preview
                       </Button>
                     )}
                   </div>
