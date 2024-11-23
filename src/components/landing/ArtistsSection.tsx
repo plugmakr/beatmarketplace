@@ -83,7 +83,7 @@ const ArtistsSection = () => {
     <section className="py-20 bg-black/30">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12">
-          Featured
+          <span className="text-white">Featured</span>
           <span className="bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
             {" "}Artists
           </span>

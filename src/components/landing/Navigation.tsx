@@ -25,6 +25,11 @@ const Navigation = () => (
             How it Works
           </Button>
         </Link>
+        <Link to="#pricing">
+          <Button variant="ghost" className="text-yellow-500 hover:text-yellow-400">
+            Pricing
+          </Button>
+        </Link>
         <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
           Sign Up
         </Button>

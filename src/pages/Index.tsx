@@ -4,6 +4,7 @@ import FeaturesSection from "@/components/landing/FeaturesSection";
 import BeatsSection from "@/components/landing/BeatsSection";
 import KitsSection from "@/components/landing/KitsSection";
 import ArtistsSection from "@/components/landing/ArtistsSection";
+import PricingSection from "@/components/landing/PricingSection";
 import CTASection from "@/components/landing/CTASection";
 
 const Index = () => {
@@ -15,6 +16,7 @@ const Index = () => {
       <BeatsSection />
       <KitsSection />
       <ArtistsSection />
+      <PricingSection />
       <CTASection />
     </div>
   );
