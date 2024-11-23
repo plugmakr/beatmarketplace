@@ -1,3 +1,4 @@
+import Navigation from "@/components/landing/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -7,9 +8,11 @@ import { Users, Package, BarChart3, Settings, Edit3, CreditCard } from "lucide-r
 
 const AdminPortal = () => {
   return (
-    <div className="min-h-screen bg-black p-8 pl-72">
-      <h1 className="text-3xl font-bold text-yellow-500 mb-8">Admin Portal</h1>
-      
+    <div className="min-h-screen bg-black">
+      <Navigation />
+      <div className="pl-64 p-8">
+        <h1 className="text-3xl font-bold text-yellow-500 mb-8">Admin Portal</h1>
+        
       <Tabs defaultValue="dashboard" className="space-y-6">
         <TabsList className="bg-black/60 border border-yellow-500/20">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
@@ -165,6 +168,7 @@ const AdminPortal = () => {
           </div>
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 };
