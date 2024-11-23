@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const featuredArtists = [
   {
@@ -75,47 +76,54 @@ const featuredArtists = [
   }
 ];
 
-const ArtistsSection = () => (
-  <section className="py-20 bg-black/30">
-    <div className="container mx-auto px-4">
-      <h2 className="text-4xl font-bold text-center mb-12">
-        Featured
-        <span className="bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
-          {" "}Artists
-        </span>
-      </h2>
-      <Carousel className="w-full max-w-6xl mx-auto">
-        <CarouselContent>
-          {featuredArtists.map((artist) => (
-            <CarouselItem key={artist.id} className="md:basis-1/3 lg:basis-1/4">
-              <Card className="bg-black/60 border border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-300">
-                <CardHeader>
-                  <img
-                    src={artist.image}
-                    alt={artist.name}
-                    className="w-full h-36 object-cover rounded-full"
-                  />
-                </CardHeader>
-                <CardContent>
-                  <CardTitle className="text-white mb-2 text-lg text-center">{artist.name}</CardTitle>
-                  <CardDescription className="text-gray-400 text-center">
-                    {artist.genre}
-                  </CardDescription>
-                  <div className="mt-3 flex justify-center">
-                    <Badge variant="outline" className="text-yellow-500 border-yellow-500">
-                      {artist.sales}
-                    </Badge>
-                  </div>
-                </CardContent>
-              </Card>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-    </div>
-  </section>
-);
+const ArtistsSection = () => {
+  const navigate = useNavigate();
+
+  return (
+    <section className="py-20 bg-black/30">
+      <div className="container mx-auto px-4">
+        <h2 className="text-4xl font-bold text-center mb-12">
+          Featured
+          <span className="bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
+            {" "}Artists
+          </span>
+        </h2>
+        <Carousel className="w-full max-w-6xl mx-auto">
+          <CarouselContent>
+            {featuredArtists.map((artist) => (
+              <CarouselItem key={artist.id} className="md:basis-1/3 lg:basis-1/4">
+                <Card 
+                  className="bg-black/60 border border-yellow-500/20 hover:border-yellow-500/40 transition-all duration-300 cursor-pointer"
+                  onClick={() => navigate(`/artists/${artist.name}`)}
+                >
+                  <CardHeader>
+                    <img
+                      src={artist.image}
+                      alt={artist.name}
+                      className="w-full h-36 object-cover rounded-full"
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardTitle className="text-white mb-2 text-lg text-center">{artist.name}</CardTitle>
+                    <CardDescription className="text-gray-400 text-center">
+                      {artist.genre}
+                    </CardDescription>
+                    <div className="mt-3 flex justify-center">
+                      <Badge variant="outline" className="text-yellow-500 border-yellow-500">
+                        {artist.sales}
+                      </Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+      </div>
+    </section>
+  );
+};
 
 export default ArtistsSection;
