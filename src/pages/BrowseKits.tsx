@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import Navigation from "@/components/landing/Navigation";
+import TopNavigation from "@/components/landing/TopNavigation";
 import { Link } from "react-router-dom";
 
 const kits = [
@@ -89,7 +89,7 @@ const kits = [
 const BrowseKits = () => {
   return (
     <div className="min-h-screen bg-black">
-      <Navigation />
+      <TopNavigation />
       <div className="container mx-auto px-4 py-20">
         <h1 className="text-4xl font-bold text-center mb-12">
           Browse
