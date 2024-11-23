@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Navigation from "@/components/landing/Navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingCart, Play, Waveform } from "lucide-react";
+import { ShoppingCart, Play, AudioWaveform } from "lucide-react";
 
 const BeatDetails = () => {
   const { id } = useParams();
@@ -38,7 +38,7 @@ const BeatDetails = () => {
             <div className="bg-black/60 border border-yellow-500/20 rounded-lg p-6">
               <h2 className="text-2xl font-bold text-white mb-4">Waveform</h2>
               <div className="h-32 flex items-center justify-center border border-yellow-500/20 rounded">
-                <Waveform className="w-12 h-12 text-yellow-500" />
+                <AudioWaveform className="w-12 h-12 text-yellow-500" />
               </div>
             </div>
           </div>
