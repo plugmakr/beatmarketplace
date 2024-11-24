@@ -1,15 +1,25 @@
-import PortalNavigation from "@/components/portal/PortalNavigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Music2, BarChart3, Upload, Package } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ArtistPortal = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-black">
-      <PortalNavigation />
-      <div className="pl-64 p-8">
-        <h1 className="text-3xl font-bold text-yellow-500 mb-8">Artist Portal</h1>
+      <div className="p-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-yellow-500">Artist Portal</h1>
+          <Button 
+            variant="ghost" 
+            className="text-yellow-500 hover:text-yellow-400"
+            onClick={() => navigate('/')}
+          >
+            Back to Home
+          </Button>
+        </div>
         
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="bg-black/60 border border-yellow-500/20">
