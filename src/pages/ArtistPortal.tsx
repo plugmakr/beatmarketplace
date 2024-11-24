@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Music2, FileText, HeadphonesIcon, WaveIcon, MessageCircle, Star } from "lucide-react";
+import { Music2, FileText, HeadphonesIcon, WavesIcon, MessageCircle, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -60,7 +60,7 @@ const ArtistPortal = () => {
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <WaveIcon className="w-4 h-4" />
+                    <WavesIcon className="w-4 h-4" />
                     Projects
                   </CardTitle>
                 </CardHeader>
