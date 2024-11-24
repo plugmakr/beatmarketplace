@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, ShoppingCart, Users, BarChart3 } from "lucide-react";
+import { DollarSign, Music2, Package, BarChart3, FileText, HeadphonesIcon, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -24,8 +24,11 @@ const SellerPortal = () => {
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="bg-black/60 border border-yellow-500/20">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="orders">Orders</TabsTrigger>
-            <TabsTrigger value="customers">Customers</TabsTrigger>
+            <TabsTrigger value="beats">Upload Beat</TabsTrigger>
+            <TabsTrigger value="kits">Create Kit</TabsTrigger>
+            <TabsTrigger value="licenses">Create License</TabsTrigger>
+            <TabsTrigger value="content">Website Content</TabsTrigger>
+            <TabsTrigger value="support">Support</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
@@ -34,71 +37,104 @@ const SellerPortal = () => {
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <DollarSign className="w-4 h-4" />
-                    Total Revenue
+                    <Music2 className="w-4 h-4" />
+                    Total Beats
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold text-white">$5,678</p>
+                  <p className="text-2xl font-bold text-white">24</p>
                 </CardContent>
               </Card>
               
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <ShoppingCart className="w-4 h-4" />
-                    Orders
+                    <Package className="w-4 h-4" />
+                    Total Kits
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold text-white">89</p>
+                  <p className="text-2xl font-bold text-white">8</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    Customers
+                    <DollarSign className="w-4 h-4" />
+                    Revenue
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-white">$5,678</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-black/60 border border-yellow-500/20">
+                <CardHeader>
+                  <CardTitle className="text-yellow-500 flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Active Licenses
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-2xl font-bold text-white">45</p>
                 </CardContent>
               </Card>
-
-              <Card className="bg-black/60 border border-yellow-500/20">
-                <CardHeader>
-                  <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    Conversion Rate
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-2xl font-bold text-white">4.5%</p>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
-          <TabsContent value="orders">
+          <TabsContent value="beats">
             <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-yellow-500">Recent Orders</CardTitle>
+                <CardTitle className="text-yellow-500">Upload New Beat</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">No orders to display.</p>
+                <p className="text-gray-400">Upload form will be implemented here.</p>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="customers">
+          <TabsContent value="kits">
             <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-yellow-500">Customer List</CardTitle>
+                <CardTitle className="text-yellow-500">Create Sound Kit</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">No customers to display.</p>
+                <p className="text-gray-400">Kit creation form will be implemented here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="licenses">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">License Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">License creation and management will be implemented here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="content">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Website Content</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Content management will be implemented here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="support">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Support Dashboard</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Support tickets and responses will be implemented here.</p>
               </CardContent>
             </Card>
           </TabsContent>
@@ -109,7 +145,7 @@ const SellerPortal = () => {
                 <CardTitle className="text-yellow-500">Analytics Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">Analytics data will appear here.</p>
+                <p className="text-gray-400">Detailed analytics will be implemented here.</p>
               </CardContent>
             </Card>
           </TabsContent>

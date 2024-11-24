@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Music2, BarChart3, Upload, Package } from "lucide-react";
+import { Music2, FileText, HeadphonesIcon, Waveform, MessageCircle, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const ArtistPortal = () => {
   const navigate = useNavigate();
@@ -24,9 +24,11 @@ const ArtistPortal = () => {
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="bg-black/60 border border-yellow-500/20">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="beats">My Beats</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="purchased">Purchased Beats</TabsTrigger>
+            <TabsTrigger value="licenses">License Management</TabsTrigger>
+            <TabsTrigger value="projects">My Projects</TabsTrigger>
+            <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+            <TabsTrigger value="favorites">Favorites</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
@@ -34,76 +36,104 @@ const ArtistPortal = () => {
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <Music2 className="w-4 h-4" />
-                    Total Beats
+                    <HeadphonesIcon className="w-4 h-4" />
+                    Purchased Beats
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold text-white">24</p>
+                  <p className="text-2xl font-bold text-white">12</p>
                 </CardContent>
               </Card>
               
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
                   <CardTitle className="text-yellow-500 flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4" />
-                    Monthly Sales
+                    <FileText className="w-4 h-4" />
+                    Active Licenses
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold text-white">$1,234</p>
+                  <p className="text-2xl font-bold text-white">8</p>
                 </CardContent>
               </Card>
-            </div>
 
-            <div className="mt-8">
               <Card className="bg-black/60 border border-yellow-500/20">
                 <CardHeader>
-                  <CardTitle className="text-yellow-500">Quick Actions</CardTitle>
+                  <CardTitle className="text-yellow-500 flex items-center gap-2">
+                    <Waveform className="w-4 h-4" />
+                    Projects
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-x-4">
-                  <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Beat
-                  </Button>
-                  <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
-                    <Package className="w-4 h-4 mr-2" />
-                    Create Kit
-                  </Button>
+                <CardContent>
+                  <p className="text-2xl font-bold text-white">5</p>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-black/60 border border-yellow-500/20">
+                <CardHeader>
+                  <CardTitle className="text-yellow-500 flex items-center gap-2">
+                    <Star className="w-4 h-4" />
+                    Favorite Beats
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-white">15</p>
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
 
-          <TabsContent value="beats">
+          <TabsContent value="purchased">
             <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-yellow-500">My Beats</CardTitle>
+                <CardTitle className="text-yellow-500">My Purchased Beats</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">No beats uploaded yet.</p>
+                <p className="text-gray-400">List of purchased beats will be displayed here.</p>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="analytics">
+          <TabsContent value="licenses">
             <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-yellow-500">Analytics</CardTitle>
+                <CardTitle className="text-yellow-500">License Management</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">Analytics data will appear here.</p>
+                <p className="text-gray-400">View and manage your licenses here.</p>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="profile">
+          <TabsContent value="projects">
             <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
-                <CardTitle className="text-yellow-500">Profile Settings</CardTitle>
+                <CardTitle className="text-yellow-500">My Projects</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">Profile settings will appear here.</p>
+                <p className="text-gray-400">Track your music projects and releases here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="collaboration">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Collaboration Hub</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Connect and collaborate with producers here.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="favorites">
+            <Card className="bg-black/60 border border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-yellow-500">Favorite Beats</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400">Your favorite beats will be displayed here.</p>
               </CardContent>
             </Card>
           </TabsContent>
