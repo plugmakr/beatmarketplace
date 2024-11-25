@@ -1,10 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, Music2, Package, BarChart3, FileText, HeadphonesIcon, MessageCircle } from "lucide-react";
+import { DollarSign, Music2, Package, BarChart3, FileText } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import UploadBeatForm from "@/components/seller/UploadBeatForm";
 import CreateKitForm from "@/components/seller/CreateKitForm";
+import BeatLibrary from "@/components/seller/BeatLibrary";
+import KitLibrary from "@/components/seller/KitLibrary";
 
 const SellerPortal = () => {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ const SellerPortal = () => {
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="beats">Upload Beat</TabsTrigger>
             <TabsTrigger value="kits">Create Kit</TabsTrigger>
+            <TabsTrigger value="library">Library</TabsTrigger>
             <TabsTrigger value="licenses">Licenses</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
@@ -90,6 +93,13 @@ const SellerPortal = () => {
 
           <TabsContent value="kits">
             <CreateKitForm />
+          </TabsContent>
+
+          <TabsContent value="library">
+            <div className="space-y-8">
+              <BeatLibrary />
+              <KitLibrary />
+            </div>
           </TabsContent>
 
           <TabsContent value="licenses">
