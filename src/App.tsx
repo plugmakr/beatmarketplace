@@ -13,6 +13,7 @@ import ArtistProfile from "./pages/ArtistProfile";
 import AdminPortal from "./pages/AdminPortal";
 import ArtistPortal from "./pages/ArtistPortal";
 import SellerPortal from "./pages/SellerPortal";
+import Pricing from "./pages/Pricing";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/admin" element={<AdminPortal />} />
           <Route path="/artist-portal" element={<ArtistPortal />} />
           <Route path="/seller-portal" element={<SellerPortal />} />
+          <Route path="/pricing" element={<Pricing />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

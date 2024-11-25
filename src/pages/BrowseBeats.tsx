@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Play } from "lucide-react";
 import TopNavigation from "@/components/landing/TopNavigation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const beats = [
   {
@@ -109,6 +109,8 @@ const beats = [
 ];
 
 const BrowseBeats = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-black">
       <TopNavigation />
