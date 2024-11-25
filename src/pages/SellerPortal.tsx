@@ -3,6 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DollarSign, Music2, Package, BarChart3, FileText, HeadphonesIcon, MessageCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import UploadBeatForm from "@/components/seller/UploadBeatForm";
+import CreateKitForm from "@/components/seller/CreateKitForm";
 
 const SellerPortal = () => {
   const navigate = useNavigate();
@@ -26,9 +28,7 @@ const SellerPortal = () => {
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="beats">Upload Beat</TabsTrigger>
             <TabsTrigger value="kits">Create Kit</TabsTrigger>
-            <TabsTrigger value="licenses">Create License</TabsTrigger>
-            <TabsTrigger value="content">Website Content</TabsTrigger>
-            <TabsTrigger value="support">Support</TabsTrigger>
+            <TabsTrigger value="licenses">Licenses</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
@@ -85,25 +85,11 @@ const SellerPortal = () => {
           </TabsContent>
 
           <TabsContent value="beats">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">Upload New Beat</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">Upload form will be implemented here.</p>
-              </CardContent>
-            </Card>
+            <UploadBeatForm />
           </TabsContent>
 
           <TabsContent value="kits">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">Create Sound Kit</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">Kit creation form will be implemented here.</p>
-              </CardContent>
-            </Card>
+            <CreateKitForm />
           </TabsContent>
 
           <TabsContent value="licenses">
@@ -112,29 +98,22 @@ const SellerPortal = () => {
                 <CardTitle className="text-yellow-500">License Management</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">License creation and management will be implemented here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="content">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">Website Content</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">Content management will be implemented here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="support">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">Support Dashboard</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">Support tickets and responses will be implemented here.</p>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {['Basic', 'Premium', 'Exclusive'].map((type) => (
+                      <Card key={type} className="bg-black/40 border border-yellow-500/20">
+                        <CardHeader>
+                          <CardTitle className="text-yellow-500">{type} License</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
+                            Edit License Terms
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -145,7 +124,31 @@ const SellerPortal = () => {
                 <CardTitle className="text-yellow-500">Analytics Overview</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">Detailed analytics will be implemented here.</p>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Card className="bg-black/40 border border-yellow-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-yellow-500">Monthly Sales</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-[200px] flex items-center justify-center text-gray-400">
+                          Sales chart will be implemented here
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="bg-black/40 border border-yellow-500/20">
+                      <CardHeader>
+                        <CardTitle className="text-yellow-500">Popular Items</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="h-[200px] flex items-center justify-center text-gray-400">
+                          Popular items chart will be implemented here
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

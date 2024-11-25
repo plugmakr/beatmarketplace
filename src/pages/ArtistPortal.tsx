@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Music2, FileText, HeadphonesIcon, WavesIcon, MessageCircle, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import ProjectForm from "@/components/artist/ProjectForm";
 
 const ArtistPortal = () => {
   const navigate = useNavigate();
@@ -24,10 +25,8 @@ const ArtistPortal = () => {
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="bg-black/60 border border-yellow-500/20">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="purchased">Purchased Beats</TabsTrigger>
-            <TabsTrigger value="licenses">License Management</TabsTrigger>
-            <TabsTrigger value="projects">My Projects</TabsTrigger>
-            <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+            <TabsTrigger value="purchased">Purchased</TabsTrigger>
+            <TabsTrigger value="projects">Projects</TabsTrigger>
             <TabsTrigger value="favorites">Favorites</TabsTrigger>
           </TabsList>
 
@@ -89,42 +88,37 @@ const ArtistPortal = () => {
                 <CardTitle className="text-yellow-500">My Purchased Beats</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">List of purchased beats will be displayed here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="licenses">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">License Management</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">View and manage your licenses here.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[1, 2, 3].map((i) => (
+                    <Card key={i} className="bg-black/40 border border-yellow-500/20">
+                      <CardHeader>
+                        <img
+                          src={`https://images.unsplash.com/photo-148859052850${i}-98d2b5aba04b`}
+                          alt={`Beat ${i}`}
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                      </CardHeader>
+                      <CardContent>
+                        <h3 className="text-white font-bold mb-2">Beat Title {i}</h3>
+                        <p className="text-gray-400">Producer Name</p>
+                        <div className="mt-4 flex gap-2">
+                          <Button size="sm" className="bg-yellow-500 hover:bg-yellow-400 text-black">
+                            Download
+                          </Button>
+                          <Button size="sm" variant="outline" className="border-yellow-500 text-yellow-500">
+                            License Info
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="projects">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">My Projects</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">Track your music projects and releases here.</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="collaboration">
-            <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
-                <CardTitle className="text-yellow-500">Collaboration Hub</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">Connect and collaborate with producers here.</p>
-              </CardContent>
-            </Card>
+            <ProjectForm />
           </TabsContent>
 
           <TabsContent value="favorites">
@@ -133,7 +127,31 @@ const ArtistPortal = () => {
                 <CardTitle className="text-yellow-500">Favorite Beats</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">Your favorite beats will be displayed here.</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[1, 2, 3].map((i) => (
+                    <Card key={i} className="bg-black/40 border border-yellow-500/20">
+                      <CardHeader>
+                        <img
+                          src={`https://images.unsplash.com/photo-148859052850${i}-98d2b5aba04b`}
+                          alt={`Beat ${i}`}
+                          className="w-full h-32 object-cover rounded-lg"
+                        />
+                      </CardHeader>
+                      <CardContent>
+                        <h3 className="text-white font-bold mb-2">Beat Title {i}</h3>
+                        <p className="text-gray-400">Producer Name</p>
+                        <div className="mt-4 flex gap-2">
+                          <Button size="sm" className="bg-yellow-500 hover:bg-yellow-400 text-black">
+                            Preview
+                          </Button>
+                          <Button size="sm" variant="outline" className="border-yellow-500 text-yellow-500">
+                            Purchase
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
