@@ -9,7 +9,7 @@ const HowItWorks = () => {
       <TopNavigation />
       <div className="container mx-auto px-4 py-20">
         <h1 className="text-4xl font-bold text-center mb-12">
-          How It
+          <span className="text-white">How It</span>
           <span className="bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
             {" "}Works
           </span>

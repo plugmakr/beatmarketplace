@@ -114,7 +114,7 @@ const BrowseBeats = () => {
       <TopNavigation />
       <div className="container mx-auto px-4 py-20">
         <h1 className="text-4xl font-bold text-center mb-12">
-          Browse
+          <span className="text-white">Browse</span>
           <span className="bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
             {" "}Beats
           </span>
@@ -159,7 +159,11 @@ const BrowseBeats = () => {
               <CardFooter className="flex justify-between items-center">
                 <span className="text-yellow-500 font-bold">${beat.price}</span>
                 <div className="flex gap-2">
-                  <Button size="sm" className="bg-yellow-500 hover:bg-yellow-400 text-black">
+                  <Button 
+                    size="sm" 
+                    className="bg-yellow-500 hover:bg-yellow-400 text-black"
+                    onClick={() => navigate(`/beats/${beat.id}`)}
+                  >
                     <Play className="w-4 h-4 mr-1" /> Preview
                   </Button>
                   <Button size="sm" variant="outline" className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black">
