@@ -7,9 +7,11 @@ import UploadBeatForm from "@/components/seller/UploadBeatForm";
 import CreateKitForm from "@/components/seller/CreateKitForm";
 import BeatLibrary from "@/components/seller/BeatLibrary";
 import KitLibrary from "@/components/seller/KitLibrary";
+import { useToast } from "@/components/ui/use-toast";
 
 const SellerPortal = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   return (
     <div className="min-h-screen bg-black">
@@ -104,8 +106,11 @@ const SellerPortal = () => {
 
           <TabsContent value="licenses">
             <Card className="bg-black/60 border border-yellow-500/20">
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="text-yellow-500">License Management</CardTitle>
+                <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
+                  Create New License
+                </Button>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -115,10 +120,34 @@ const SellerPortal = () => {
                         <CardHeader>
                           <CardTitle className="text-yellow-500">{type} License</CardTitle>
                         </CardHeader>
-                        <CardContent>
-                          <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
-                            Edit License Terms
-                          </Button>
+                        <CardContent className="space-y-4">
+                          <div className="flex justify-end gap-2">
+                            <Button 
+                              variant="outline" 
+                              className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
+                              onClick={() => {
+                                toast({
+                                  title: "Edit License",
+                                  description: `Editing ${type} license`,
+                                });
+                              }}
+                            >
+                              <Pencil className="w-4 h-4" />
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              className="border-red-500 text-red-500 hover:bg-red-500 hover:text-black"
+                              onClick={() => {
+                                toast({
+                                  title: "Delete License",
+                                  description: `Deleting ${type} license`,
+                                  variant: "destructive",
+                                });
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </CardContent>
                       </Card>
                     ))}

@@ -4,9 +4,27 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { soundKits } from "@/data/soundKits";
-import { Package, FileAudio } from "lucide-react";
+import { Package, FileAudio, Pencil, Trash2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 const KitLibrary = () => {
+  const { toast } = useToast();
+
+  const handleEdit = (id: number) => {
+    toast({
+      title: "Edit Kit",
+      description: `Editing kit ${id}`,
+    });
+  };
+
+  const handleDelete = (id: number) => {
+    toast({
+      title: "Delete Kit",
+      description: `Deleting kit ${id}`,
+      variant: "destructive",
+    });
+  };
+
   return (
     <Card className="bg-black/60 border border-yellow-500/20">
       <CardHeader>
@@ -64,9 +82,24 @@ const KitLibrary = () => {
                         <span className="text-yellow-500 font-bold">${kit.price}</span>
                       </TableCell>
                       <TableCell>
-                        <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
-                          View Details
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
+                            onClick={() => handleEdit(kit.id)}
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-black"
+                            onClick={() => handleDelete(kit.id)}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
