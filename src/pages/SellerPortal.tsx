@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, Music2, Package, BarChart3, FileText } from "lucide-react";
+import { DollarSign, Music2, Package, BarChart3, FileText, PenLine, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import UploadBeatForm from "@/components/seller/UploadBeatForm";
@@ -132,7 +132,7 @@ const SellerPortal = () => {
                                 });
                               }}
                             >
-                              <Pencil className="w-4 h-4" />
+                              <PenLine className="w-4 h-4" />
                             </Button>
                             <Button 
                               variant="outline" 
@@ -145,7 +145,7 @@ const SellerPortal = () => {
                                 });
                               }}
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash className="w-4 h-4" />
                             </Button>
                           </div>
                         </CardContent>
