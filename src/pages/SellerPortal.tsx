@@ -1,13 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DollarSign, Music2, Package, BarChart3, FileText, PenLine, Trash } from "lucide-react";
+import { DollarSign, Music2, Package, BarChart3, FileText, PenLine, Trash, Globe } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import UploadBeatForm from "@/components/seller/UploadBeatForm";
 import CreateKitForm from "@/components/seller/CreateKitForm";
 import BeatLibrary from "@/components/seller/BeatLibrary";
 import KitLibrary from "@/components/seller/KitLibrary";
+import WebsiteSettings from "@/components/seller/WebsiteSettings";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const SellerPortal = () => {
   const navigate = useNavigate();
@@ -29,12 +36,13 @@ const SellerPortal = () => {
         
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="bg-black/60 border border-yellow-500/20">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="beats">Upload Beat</TabsTrigger>
-            <TabsTrigger value="kits">Create Kit</TabsTrigger>
-            <TabsTrigger value="library">Library</TabsTrigger>
-            <TabsTrigger value="licenses">Licenses</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="dashboard" className="text-white data-[state=active]:text-yellow-500">Dashboard</TabsTrigger>
+            <TabsTrigger value="beats" className="text-white data-[state=active]:text-yellow-500">Upload Beat</TabsTrigger>
+            <TabsTrigger value="kits" className="text-white data-[state=active]:text-yellow-500">Create Kit</TabsTrigger>
+            <TabsTrigger value="library" className="text-white data-[state=active]:text-yellow-500">Library</TabsTrigger>
+            <TabsTrigger value="licenses" className="text-white data-[state=active]:text-yellow-500">Licenses</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-white data-[state=active]:text-yellow-500">Analytics</TabsTrigger>
+            <TabsTrigger value="website" className="text-white data-[state=active]:text-yellow-500">Website</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
@@ -98,10 +106,20 @@ const SellerPortal = () => {
           </TabsContent>
 
           <TabsContent value="library">
-            <div className="space-y-8">
-              <BeatLibrary />
-              <KitLibrary />
-            </div>
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="beats" className="border border-yellow-500/20 rounded-lg bg-black/60">
+                <AccordionTrigger className="px-4 text-yellow-500">Beats Library</AccordionTrigger>
+                <AccordionContent className="px-4">
+                  <BeatLibrary />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="kits" className="border border-yellow-500/20 rounded-lg bg-black/60">
+                <AccordionTrigger className="px-4 text-yellow-500">Sound Kits Library</AccordionTrigger>
+                <AccordionContent className="px-4">
+                  <KitLibrary />
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </TabsContent>
 
           <TabsContent value="licenses">
@@ -170,7 +188,7 @@ const SellerPortal = () => {
                         <CardTitle className="text-yellow-500">Monthly Sales</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="h-[200px] flex items-center justify-center text-gray-400">
+                        <div className="h-[200px] flex items-center justify-center text-white">
                           Sales chart will be implemented here
                         </div>
                       </CardContent>
@@ -181,7 +199,7 @@ const SellerPortal = () => {
                         <CardTitle className="text-yellow-500">Popular Items</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="h-[200px] flex items-center justify-center text-gray-400">
+                        <div className="h-[200px] flex items-center justify-center text-white">
                           Popular items chart will be implemented here
                         </div>
                       </CardContent>
@@ -190,6 +208,10 @@ const SellerPortal = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="website">
+            <WebsiteSettings />
           </TabsContent>
         </Tabs>
       </div>
