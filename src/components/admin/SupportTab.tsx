@@ -43,15 +43,15 @@ const SupportTab = () => {
           <TableBody>
             {mockTickets.map((ticket) => (
               <TableRow key={ticket.id} className="border-yellow-500/20">
-                <TableCell>#{ticket.id}</TableCell>
-                <TableCell>{ticket.user}</TableCell>
-                <TableCell>{ticket.subject}</TableCell>
+                <TableCell className="text-white">#{ticket.id}</TableCell>
+                <TableCell className="text-white">{ticket.user}</TableCell>
+                <TableCell className="text-white">{ticket.subject}</TableCell>
                 <TableCell>
                   <Badge variant={ticket.status === 'open' ? 'default' : 'secondary'}>
                     {ticket.status}
                   </Badge>
                 </TableCell>
-                <TableCell>{ticket.date}</TableCell>
+                <TableCell className="text-white">{ticket.date}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button 

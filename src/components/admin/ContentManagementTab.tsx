@@ -1,13 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Music2, Package, Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, PenLine, Trash } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { featuredBeats } from "@/data/featuredBeats";
 import { soundKits } from "@/data/soundKits";
+import Rating from "@/components/shared/Rating";
 
 const ContentManagementTab = () => {
   const { toast } = useToast();
@@ -27,8 +26,8 @@ const ContentManagementTab = () => {
       <CardContent>
         <Tabs defaultValue="beats" className="space-y-4">
           <TabsList className="bg-black/60 border border-yellow-500/20">
-            <TabsTrigger value="beats">Beats</TabsTrigger>
-            <TabsTrigger value="kits">Sound Kits</TabsTrigger>
+            <TabsTrigger value="beats" className="text-white">Beats</TabsTrigger>
+            <TabsTrigger value="kits" className="text-white">Sound Kits</TabsTrigger>
           </TabsList>
 
           <TabsContent value="beats">
@@ -47,15 +46,19 @@ const ContentManagementTab = () => {
                     <TableHead className="text-yellow-500">Title</TableHead>
                     <TableHead className="text-yellow-500">Producer</TableHead>
                     <TableHead className="text-yellow-500">Price</TableHead>
+                    <TableHead className="text-yellow-500">Rating</TableHead>
                     <TableHead className="text-yellow-500">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {featuredBeats.map((beat) => (
                     <TableRow key={beat.id} className="border-yellow-500/20">
-                      <TableCell className="font-medium">{beat.title}</TableCell>
-                      <TableCell>{beat.producer}</TableCell>
-                      <TableCell>${beat.price}</TableCell>
+                      <TableCell className="font-medium text-white">{beat.title}</TableCell>
+                      <TableCell className="text-white">{beat.producer}</TableCell>
+                      <TableCell className="text-white">${beat.price}</TableCell>
+                      <TableCell>
+                        <Rating initialRating={beat.rating} readonly size="sm" />
+                      </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
                           <Button 
@@ -63,14 +66,14 @@ const ContentManagementTab = () => {
                             variant="outline"
                             className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
                           >
-                            <Pencil className="w-4 h-4" />
+                            <PenLine className="w-4 h-4" />
                           </Button>
                           <Button 
                             size="sm" 
                             variant="outline"
                             className="border-red-500 text-red-500 hover:bg-red-500 hover:text-black"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash className="w-4 h-4" />
                           </Button>
                         </div>
                       </TableCell>
@@ -97,15 +100,19 @@ const ContentManagementTab = () => {
                     <TableHead className="text-yellow-500">Title</TableHead>
                     <TableHead className="text-yellow-500">Producer</TableHead>
                     <TableHead className="text-yellow-500">Price</TableHead>
+                    <TableHead className="text-yellow-500">Rating</TableHead>
                     <TableHead className="text-yellow-500">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {soundKits.map((kit) => (
                     <TableRow key={kit.id} className="border-yellow-500/20">
-                      <TableCell className="font-medium">{kit.title}</TableCell>
-                      <TableCell>{kit.producer}</TableCell>
-                      <TableCell>${kit.price}</TableCell>
+                      <TableCell className="font-medium text-white">{kit.title}</TableCell>
+                      <TableCell className="text-white">{kit.producer}</TableCell>
+                      <TableCell className="text-white">${kit.price}</TableCell>
+                      <TableCell>
+                        <Rating initialRating={kit.rating} readonly size="sm" />
+                      </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
                           <Button 
@@ -113,14 +120,14 @@ const ContentManagementTab = () => {
                             variant="outline"
                             className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
                           >
-                            <Pencil className="w-4 h-4" />
+                            <PenLine className="w-4 h-4" />
                           </Button>
                           <Button 
                             size="sm" 
                             variant="outline"
                             className="border-red-500 text-red-500 hover:bg-red-500 hover:text-black"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash className="w-4 h-4" />
                           </Button>
                         </div>
                       </TableCell>

@@ -4,9 +4,22 @@ import { Music2, FileText, HeadphonesIcon, WavesIcon, MessageCircle, Star } from
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ProjectForm from "@/components/artist/ProjectForm";
+import Rating from "@/components/shared/Rating";
 
 const ArtistPortal = () => {
   const navigate = useNavigate();
+
+  const mockPurchasedBeats = [
+    { id: 1, title: "Summer Vibes", producer: "BeatMaster", image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b", rating: 4.5 },
+    { id: 2, title: "Night Rider", producer: "WaveMaker", image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7", rating: 4.8 },
+    { id: 3, title: "Ocean Dreams", producer: "SoundScape", image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07", rating: 4.2 },
+  ];
+
+  const mockFavoriteBeats = [
+    { id: 1, title: "Urban Flow", producer: "CityBeats", image: "https://images.unsplash.com/photo-1527576539890-dfa815648363", rating: 4.7 },
+    { id: 2, title: "Midnight Drive", producer: "NightOwl", image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b", rating: 4.4 },
+    { id: 3, title: "Electric Dreams", producer: "VoltageBeats", image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7", rating: 4.9 },
+  ];
 
   return (
     <div className="min-h-screen bg-black">
@@ -24,10 +37,10 @@ const ArtistPortal = () => {
         
         <Tabs defaultValue="dashboard" className="space-y-6">
           <TabsList className="bg-black/60 border border-yellow-500/20">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="purchased">Purchased</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="favorites">Favorites</TabsTrigger>
+            <TabsTrigger value="dashboard" className="text-white">Dashboard</TabsTrigger>
+            <TabsTrigger value="purchased" className="text-white">Purchased</TabsTrigger>
+            <TabsTrigger value="projects" className="text-white">Projects</TabsTrigger>
+            <TabsTrigger value="favorites" className="text-white">Favorites</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
@@ -89,19 +102,22 @@ const ArtistPortal = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[1, 2, 3].map((i) => (
-                    <Card key={i} className="bg-black/40 border border-yellow-500/20">
+                  {mockPurchasedBeats.map((beat) => (
+                    <Card key={beat.id} className="bg-black/40 border border-yellow-500/20">
                       <CardHeader>
                         <img
-                          src={`https://images.unsplash.com/photo-148859052850${i}-98d2b5aba04b`}
-                          alt={`Beat ${i}`}
+                          src={beat.image}
+                          alt={beat.title}
                           className="w-full h-32 object-cover rounded-lg"
                         />
                       </CardHeader>
                       <CardContent>
-                        <h3 className="text-white font-bold mb-2">Beat Title {i}</h3>
-                        <p className="text-gray-400">Producer Name</p>
-                        <div className="mt-4 flex gap-2">
+                        <h3 className="text-white font-bold mb-2">{beat.title}</h3>
+                        <p className="text-gray-400">{beat.producer}</p>
+                        <div className="mt-2 mb-4">
+                          <Rating initialRating={beat.rating} readonly size="sm" />
+                        </div>
+                        <div className="flex gap-2">
                           <Button size="sm" className="bg-yellow-500 hover:bg-yellow-400 text-black">
                             Download
                           </Button>
@@ -128,19 +144,22 @@ const ArtistPortal = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[1, 2, 3].map((i) => (
-                    <Card key={i} className="bg-black/40 border border-yellow-500/20">
+                  {mockFavoriteBeats.map((beat) => (
+                    <Card key={beat.id} className="bg-black/40 border border-yellow-500/20">
                       <CardHeader>
                         <img
-                          src={`https://images.unsplash.com/photo-148859052850${i}-98d2b5aba04b`}
-                          alt={`Beat ${i}`}
+                          src={beat.image}
+                          alt={beat.title}
                           className="w-full h-32 object-cover rounded-lg"
                         />
                       </CardHeader>
                       <CardContent>
-                        <h3 className="text-white font-bold mb-2">Beat Title {i}</h3>
-                        <p className="text-gray-400">Producer Name</p>
-                        <div className="mt-4 flex gap-2">
+                        <h3 className="text-white font-bold mb-2">{beat.title}</h3>
+                        <p className="text-gray-400">{beat.producer}</p>
+                        <div className="mt-2 mb-4">
+                          <Rating initialRating={beat.rating} readonly size="sm" />
+                        </div>
+                        <div className="flex gap-2">
                           <Button size="sm" className="bg-yellow-500 hover:bg-yellow-400 text-black">
                             Preview
                           </Button>
