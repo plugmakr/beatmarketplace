@@ -7,6 +7,7 @@ export interface Beat {
   key: string;
   genres: string[];
   image: string;
+  rating: number;
 }
 
 export const featuredBeats: Beat[] = [
@@ -18,7 +19,8 @@ export const featuredBeats: Beat[] = [
     bpm: 140,
     key: "C Minor",
     genres: ["Hip Hop", "Trap"],
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b"
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    rating: 4.5
   },
   {
     id: 2,
@@ -28,7 +30,8 @@ export const featuredBeats: Beat[] = [
     bpm: 128,
     key: "G Major",
     genres: ["Trap", "R&B"],
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+    rating: 4.3
   },
   {
     id: 3,
@@ -38,7 +41,8 @@ export const featuredBeats: Beat[] = [
     bpm: 95,
     key: "D Minor",
     genres: ["R&B", "Soul"],
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    rating: 4.7
   },
   {
     id: 4,
@@ -48,7 +52,8 @@ export const featuredBeats: Beat[] = [
     bpm: 135,
     key: "A Minor",
     genres: ["Hip Hop", "Urban"],
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+    rating: 4.6
   },
   {
     id: 5,
@@ -58,7 +63,8 @@ export const featuredBeats: Beat[] = [
     bpm: 120,
     key: "E Minor",
     genres: ["R&B", "Pop"],
-    image: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843"
+    image: "https://images.unsplash.com/photo-1523712999610-f77fbcfc3843",
+    rating: 4.4
   },
   {
     id: 6,
@@ -68,7 +74,8 @@ export const featuredBeats: Beat[] = [
     bpm: 130,
     key: "F Major",
     genres: ["Electronic", "Pop"],
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475"
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    rating: 4.8
   },
   {
     id: 7,
@@ -78,7 +85,8 @@ export const featuredBeats: Beat[] = [
     bpm: 125,
     key: "B Minor",
     genres: ["Hip Hop", "Jazz"],
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7"
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+    rating: 4.2
   },
   {
     id: 8,
@@ -88,7 +96,8 @@ export const featuredBeats: Beat[] = [
     bpm: 140,
     key: "D Major",
     genres: ["Pop", "Electronic"],
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b"
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    rating: 4.9
   },
   {
     id: 9,
@@ -98,7 +107,8 @@ export const featuredBeats: Beat[] = [
     bpm: 145,
     key: "G Minor",
     genres: ["Trap", "Arabic"],
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
+    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+    rating: 4.1
   },
   {
     id: 10,
@@ -108,6 +118,7 @@ export const featuredBeats: Beat[] = [
     bpm: 132,
     key: "C Major",
     genres: ["Electronic", "Ambient"],
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    rating: 4.5
   }
 ];
