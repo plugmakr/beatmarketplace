@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import DashboardTab from "@/components/admin/DashboardTab";
 import UsersTab from "@/components/admin/UsersTab";
 import ContentTab from "@/components/admin/ContentTab";
+import ContentManagementTab from "@/components/admin/ContentManagementTab";
+import EmailSettingsTab from "@/components/admin/EmailSettingsTab";
+import SupportTab from "@/components/admin/SupportTab";
 import SubscriptionPlansTab from "@/components/admin/SubscriptionPlansTab";
 
 const AdminPortal = () => {
@@ -28,7 +31,10 @@ const AdminPortal = () => {
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
             <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="content-management">Content Management</TabsTrigger>
             <TabsTrigger value="subscription-plans">Subscription Plans</TabsTrigger>
+            <TabsTrigger value="email">Email Settings</TabsTrigger>
+            <TabsTrigger value="support">Support</TabsTrigger>
           </TabsList>
 
           <TabsContent value="dashboard">
@@ -43,8 +49,20 @@ const AdminPortal = () => {
             <ContentTab />
           </TabsContent>
 
+          <TabsContent value="content-management">
+            <ContentManagementTab />
+          </TabsContent>
+
           <TabsContent value="subscription-plans">
             <SubscriptionPlansTab />
+          </TabsContent>
+
+          <TabsContent value="email">
+            <EmailSettingsTab />
+          </TabsContent>
+
+          <TabsContent value="support">
+            <SupportTab />
           </TabsContent>
         </Tabs>
       </div>
