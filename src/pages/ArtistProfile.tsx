@@ -1,4 +1,3 @@
-import Navigation from "@/components/landing/Navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,7 +47,6 @@ const ArtistProfile = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      <Navigation />
       <div className="container mx-auto px-4 py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-1">
