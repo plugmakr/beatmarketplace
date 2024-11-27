@@ -36,7 +36,7 @@ const UsersTab = () => {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
       role: formData.get('role') as 'admin' | 'artist' | 'seller',
-      status: 'active',
+      status: 'active' as const,
       joinDate: new Date().toISOString().split('T')[0],
       lastLogin: new Date().toISOString().split('T')[0],
     };
@@ -106,7 +106,7 @@ const UsersTab = () => {
               </tr>
             </thead>
             <tbody>
-              {mockUsers.map((user) => (
+              {users.map((user) => (
                 <tr key={user.id} className="border-b border-yellow-500/10">
                   <td className="p-4">{user.name}</td>
                   <td className="p-4">{user.email}</td>
