@@ -5,234 +5,121 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Edit3 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { featuredBeats } from "@/data/featuredBeats";
-import { soundKits } from "@/data/soundKits";
-import { featuredArtists } from "@/data/featuredArtists";
+import { useLandingPageStore } from "@/store/landingPageStore";
+import { useToast } from "@/components/ui/use-toast";
+import SectionOrderControls from "./SectionOrderControls";
 
-const ContentTab = () => (
-  <Card className="bg-black/60 border border-yellow-500/20">
-    <CardHeader>
-      <CardTitle className="text-yellow-500">Landing Page Content</CardTitle>
-    </CardHeader>
-    <CardContent className="space-y-6">
-      <Accordion type="single" collapsible className="space-y-4">
-        {/* Hero Section */}
-        <AccordionItem value="hero" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">Hero Section</AccordionTrigger>
-          <AccordionContent className="space-y-4 p-4">
-            <div>
-              <Label htmlFor="hero-title" className="text-white">Title</Label>
-              <Input 
-                id="hero-title" 
-                defaultValue="Turn Your Beats Into Success" 
-                className="bg-black/60 text-white"
-              />
-            </div>
-            <div>
-              <Label htmlFor="hero-description" className="text-white">Description</Label>
-              <Textarea 
-                id="hero-description" 
-                defaultValue="Join thousands of producers selling their beats to artists worldwide. Start your journey today." 
-                className="bg-black/60 text-white"
-              />
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+const ContentTab = () => {
+  const { content, updateContent, updateSectionOrder } = useLandingPageStore();
+  const { toast } = useToast();
 
-        {/* Features Section */}
-        <AccordionItem value="features" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">Features Section</AccordionTrigger>
-          <AccordionContent className="space-y-4 p-4">
-            <div>
-              <Label htmlFor="features-title" className="text-white">Title</Label>
-              <Input 
-                id="features-title" 
-                defaultValue="Everything You Need to Succeed" 
-                className="bg-black/60 text-white"
-              />
-            </div>
-            {['Sell Your Beats', 'License Your Music', 'Easy Upload', 'Secure Payments'].map((feature, index) => (
-              <div key={index}>
-                <Label htmlFor={`feature-${index}`} className="text-white">Feature {index + 1}</Label>
-                <Input 
-                  id={`feature-${index}`} 
-                  defaultValue={feature}
-                  className="bg-black/60 text-white"
-                />
-              </div>
-            ))}
-          </AccordionContent>
-        </AccordionItem>
+  const handleSectionMove = (index: number, direction: 'up' | 'down') => {
+    const newOrder = [...content.sectionsOrder];
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    [newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
+    updateSectionOrder(newOrder);
+  };
 
-        {/* Featured Beats Section */}
-        <AccordionItem value="beats" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">Featured Beats Section</AccordionTrigger>
-          <AccordionContent className="p-4">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="beats-title" className="text-white">Title</Label>
-                <Input 
-                  id="beats-title" 
-                  defaultValue="Featured Beats" 
-                  className="bg-black/60 text-white"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                {featuredBeats.map((beat) => (
-                  <div key={beat.id} className="bg-black/40 p-4 rounded-lg border border-yellow-500/20">
-                    <img 
-                      src={beat.image} 
-                      alt={beat.title} 
-                      className="w-full h-32 object-cover rounded-lg mb-2"
-                    />
-                    <Input 
-                      defaultValue={beat.title}
-                      className="bg-black/60 text-white mb-2"
-                    />
-                    <Input 
-                      defaultValue={beat.producer}
-                      className="bg-black/60 text-white mb-2"
-                    />
-                    <Input 
-                      defaultValue={beat.price.toString()}
-                      className="bg-black/60 text-white"
-                      type="number"
-                      step="0.01"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+  const handleSave = () => {
+    toast({
+      title: "Changes Saved",
+      description: "Your changes have been saved successfully.",
+    });
+  };
 
-        {/* Featured Kits Section */}
-        <AccordionItem value="kits" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">Featured Kits Section</AccordionTrigger>
-          <AccordionContent className="p-4">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="kits-title" className="text-white">Title</Label>
-                <Input 
-                  id="kits-title" 
-                  defaultValue="Featured Kits" 
-                  className="bg-black/60 text-white"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                {soundKits.map((kit) => (
-                  <div key={kit.id} className="bg-black/40 p-4 rounded-lg border border-yellow-500/20">
-                    <img 
-                      src={kit.image} 
-                      alt={kit.title} 
-                      className="w-full h-32 object-cover rounded-lg mb-2"
-                    />
-                    <Input 
-                      defaultValue={kit.title}
-                      className="bg-black/60 text-white mb-2"
-                    />
-                    <Input 
-                      defaultValue={kit.producer}
-                      className="bg-black/60 text-white mb-2"
-                    />
-                    <Input 
-                      defaultValue={kit.price.toString()}
-                      className="bg-black/60 text-white"
-                      type="number"
-                      step="0.01"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+  return (
+    <Card className="bg-black/60 border border-yellow-500/20">
+      <CardHeader>
+        <CardTitle className="text-yellow-500">Landing Page Content</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <Accordion type="single" collapsible className="space-y-4">
+          {content.sectionsOrder.map((sectionKey, index) => {
+            const section = content[sectionKey as keyof typeof content];
+            if (!section) return null;
 
-        {/* Featured Artists Section */}
-        <AccordionItem value="artists" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">Featured Artists Section</AccordionTrigger>
-          <AccordionContent className="p-4">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="artists-title" className="text-white">Title</Label>
-                <Input 
-                  id="artists-title" 
-                  defaultValue="Featured Artists" 
-                  className="bg-black/60 text-white"
-                />
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                {featuredArtists.map((artist) => (
-                  <div key={artist.id} className="bg-black/40 p-4 rounded-lg border border-yellow-500/20">
-                    <img 
-                      src={artist.image} 
-                      alt={artist.name} 
-                      className="w-full h-32 object-cover rounded-lg mb-2"
-                    />
-                    <Input 
-                      defaultValue={artist.name}
-                      className="bg-black/60 text-white mb-2"
-                    />
-                    <Input 
-                      defaultValue={artist.genre}
-                      className="bg-black/60 text-white mb-2"
-                    />
-                    <Input 
-                      defaultValue={artist.sales}
-                      className="bg-black/60 text-white"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+            return (
+              <AccordionItem 
+                key={sectionKey} 
+                value={sectionKey} 
+                className="border border-yellow-500/20 rounded-lg"
+              >
+                <div className="flex items-center justify-between px-4">
+                  <AccordionTrigger className="text-yellow-500 text-xl">
+                    {sectionKey.charAt(0).toUpperCase() + sectionKey.slice(1)} Section
+                  </AccordionTrigger>
+                  <SectionOrderControls
+                    sectionName={sectionKey}
+                    index={index}
+                    totalSections={content.sectionsOrder.length}
+                    onMoveUp={() => handleSectionMove(index, 'up')}
+                    onMoveDown={() => handleSectionMove(index, 'down')}
+                  />
+                </div>
+                <AccordionContent className="space-y-4 p-4">
+                  {'title' in section && (
+                    <div>
+                      <Label htmlFor={`${sectionKey}-title`} className="text-white">Title</Label>
+                      <Input 
+                        id={`${sectionKey}-title`}
+                        value={section.title}
+                        onChange={(e) => updateContent(sectionKey as any, { ...section, title: e.target.value })}
+                        className="bg-black/60 text-white"
+                      />
+                    </div>
+                  )}
+                  {'description' in section && (
+                    <div>
+                      <Label htmlFor={`${sectionKey}-description`} className="text-white">Description</Label>
+                      <Textarea 
+                        id={`${sectionKey}-description`}
+                        value={section.description}
+                        onChange={(e) => updateContent(sectionKey as any, { ...section, description: e.target.value })}
+                        className="bg-black/60 text-white"
+                      />
+                    </div>
+                  )}
+                  {'items' in section && Array.isArray(section.items) && (
+                    <div className="space-y-2">
+                      {section.items.map((item: any, itemIndex: number) => (
+                        <div key={itemIndex}>
+                          <Label htmlFor={`${sectionKey}-item-${itemIndex}`} className="text-white">
+                            {typeof item === 'string' ? `Item ${itemIndex + 1}` : item.title}
+                          </Label>
+                          <Input 
+                            id={`${sectionKey}-item-${itemIndex}`}
+                            value={typeof item === 'string' ? item : item.title}
+                            onChange={(e) => {
+                              const newItems = [...section.items];
+                              if (typeof item === 'string') {
+                                newItems[itemIndex] = e.target.value;
+                              } else {
+                                newItems[itemIndex] = { ...item, title: e.target.value };
+                              }
+                              updateContent(sectionKey as any, { ...section, items: newItems });
+                            }}
+                            className="bg-black/60 text-white"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
 
-        {/* Pricing Section */}
-        <AccordionItem value="pricing" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">Pricing Section</AccordionTrigger>
-          <AccordionContent className="space-y-4 p-4">
-            <div>
-              <Label htmlFor="pricing-title" className="text-white">Title</Label>
-              <Input 
-                id="pricing-title" 
-                defaultValue="Simple Pricing" 
-                className="bg-black/60 text-white"
-              />
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* CTA Section */}
-        <AccordionItem value="cta" className="border border-yellow-500/20 rounded-lg">
-          <AccordionTrigger className="text-yellow-500 text-xl px-4">CTA Section</AccordionTrigger>
-          <AccordionContent className="space-y-4 p-4">
-            <div>
-              <Label htmlFor="cta-title" className="text-white">Title</Label>
-              <Input 
-                id="cta-title" 
-                defaultValue="Ready to Start Selling?" 
-                className="bg-black/60 text-white"
-              />
-            </div>
-            <div>
-              <Label htmlFor="cta-description" className="text-white">Description</Label>
-              <Textarea 
-                id="cta-description" 
-                defaultValue="Join our community of producers and start selling your beats today. No hidden fees, just pure music business." 
-                className="bg-black/60 text-white"
-              />
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-
-      <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
-        <Edit3 className="w-4 h-4 mr-2" />
-        Save Changes
-      </Button>
-    </CardContent>
-  </Card>
-);
+        <Button 
+          onClick={handleSave}
+          className="bg-yellow-500 hover:bg-yellow-400 text-black"
+        >
+          <Edit3 className="w-4 h-4 mr-2" />
+          Save Changes
+        </Button>
+      </CardContent>
+    </Card>
+  );
+};
 
 export default ContentTab;

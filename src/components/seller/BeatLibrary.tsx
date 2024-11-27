@@ -2,26 +2,27 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Music2, Play, Pencil, Trash2 } from "lucide-react";
+import { Music2, Play, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { featuredBeats } from "@/data/featuredBeats";
+import { featuredBeats, Beat } from "@/data/featuredBeats";
+import EditBeatDialog from "./EditBeatDialog";
+import { useState } from "react";
 
 const BeatLibrary = () => {
   const { toast } = useToast();
+  const [beats, setBeats] = useState<Beat[]>(featuredBeats);
 
-  const handleEdit = (id: number) => {
+  const handleDelete = (id: number) => {
+    setBeats(beats.filter(beat => beat.id !== id));
     toast({
-      title: "Edit Beat",
-      description: `Editing beat ${id}`,
+      title: "Delete Beat",
+      description: `Beat deleted successfully`,
+      variant: "destructive",
     });
   };
 
-  const handleDelete = (id: number) => {
-    toast({
-      title: "Delete Beat",
-      description: `Deleting beat ${id}`,
-      variant: "destructive",
-    });
+  const handleUpdateBeat = (updatedBeat: Beat) => {
+    setBeats(beats.map(beat => beat.id === updatedBeat.id ? updatedBeat : beat));
   };
 
   return (
@@ -45,7 +46,7 @@ const BeatLibrary = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {featuredBeats.map((beat) => (
+            {beats.map((beat) => (
               <TableRow key={beat.id} className="border-yellow-500/20">
                 <TableCell>
                   <img
@@ -81,14 +82,7 @@ const BeatLibrary = () => {
                     <Button size="sm" className="bg-yellow-500 hover:bg-yellow-400 text-black">
                       <Play className="w-4 h-4" />
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
-                      onClick={() => handleEdit(beat.id)}
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </Button>
+                    <EditBeatDialog beat={beat} onSave={handleUpdateBeat} />
                     <Button 
                       size="sm" 
                       variant="outline" 
