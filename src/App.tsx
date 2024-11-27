@@ -9,6 +9,7 @@ import BrowseKits from "./pages/BrowseKits";
 import HowItWorks from "./pages/HowItWorks";
 import BeatDetails from "./pages/BeatDetails";
 import KitDetails from "./pages/KitDetails";
+import ArtistProfile from "./pages/ArtistProfile";
 import AdminPortal from "./pages/AdminPortal";
 import ArtistPortal from "./pages/ArtistPortal";
 import SellerPortal from "./pages/SellerPortal";
