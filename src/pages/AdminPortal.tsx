@@ -8,6 +8,7 @@ import ContentManagementTab from "@/components/admin/ContentManagementTab";
 import EmailSettingsTab from "@/components/admin/EmailSettingsTab";
 import SupportTab from "@/components/admin/SupportTab";
 import SubscriptionPlansTab from "@/components/admin/SubscriptionPlansTab";
+import BillingManagementTab from "@/components/admin/BillingManagementTab";
 
 const AdminPortal = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const AdminPortal = () => {
             <TabsTrigger value="content">Content</TabsTrigger>
             <TabsTrigger value="content-management">Content Management</TabsTrigger>
             <TabsTrigger value="subscription-plans">Subscription Plans</TabsTrigger>
+            <TabsTrigger value="billing">Billing</TabsTrigger>
             <TabsTrigger value="email">Email Settings</TabsTrigger>
             <TabsTrigger value="support">Support</TabsTrigger>
           </TabsList>
@@ -55,6 +57,10 @@ const AdminPortal = () => {
 
           <TabsContent value="subscription-plans">
             <SubscriptionPlansTab />
+          </TabsContent>
+
+          <TabsContent value="billing">
+            <BillingManagementTab />
           </TabsContent>
 
           <TabsContent value="email">
