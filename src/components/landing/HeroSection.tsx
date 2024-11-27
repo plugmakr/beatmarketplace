@@ -10,8 +10,8 @@ const HeroSection = () => (
         backgroundPosition: "center",
       }}
     />
-    <div className="container mx-auto px-4 relative z-10">
-      <div className="max-w-3xl">
+    <div className="container mx-auto px-4 relative z-10 flex justify-center items-center">
+      <div className="max-w-3xl text-center">
         <h2 className="text-5xl font-bold text-white mb-6">
           Turn Your Beats Into
           <span className="bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
