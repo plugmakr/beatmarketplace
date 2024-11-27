@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import BrowseBeats from "./pages/BrowseBeats";
 import BrowseKits from "./pages/BrowseKits";
@@ -31,6 +31,7 @@ const App = () => (
           <Route path="/beats/:id" element={<BeatDetails />} />
           <Route path="/kits/:id" element={<KitDetails />} />
           <Route path="/seller/:id" element={<ArtistProfile />} />
+          <Route path="/artists/:id" element={<ArtistProfile />} />
           <Route path="/admin" element={<AdminPortal />} />
           <Route path="/artist-portal" element={<ArtistPortal />} />
           <Route path="/seller-portal" element={<SellerPortal />} />
