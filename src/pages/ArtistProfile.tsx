@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Music2, Package, Handshake, Users, Globe, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useState } from "react";
 import { featuredBeats } from "@/data/featuredBeats";
+import BeatTable from "@/components/artist/BeatTable";
 
 const ArtistProfile = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -71,7 +71,7 @@ const ArtistProfile = () => {
       {/* Navigation Menu */}
       <div className="sticky top-0 z-50 bg-black/95 border-b border-yellow-500/20 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab}>
+          <Tabs defaultValue="beats" className="w-full" onValueChange={setActiveTab}>
             <TabsList className="h-16 w-full justify-start bg-transparent border-b border-yellow-500/20">
               <TabsTrigger value="beats" className="data-[state=active]:text-yellow-500">
                 <Music2 className="w-4 h-4 mr-2" />
@@ -94,6 +94,53 @@ const ArtistProfile = () => {
                 Social Media
               </TabsTrigger>
             </TabsList>
+
+            {/* Main Content */}
+            <div className="container mx-auto px-4 py-8 mb-24">
+              <TabsContent value="beats" className="mt-0">
+                <Card className="bg-black/60 border border-yellow-500/20">
+                  <CardContent className="p-6">
+                    <BeatTable 
+                      beats={featuredBeats}
+                      onPlay={setCurrentBeatIndex}
+                      currentBeatIndex={currentBeatIndex}
+                    />
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="kits" className="mt-0">
+                <Card className="bg-black/60 border border-yellow-500/20">
+                  <CardContent className="p-6">
+                    <h2 className="text-2xl font-bold text-white mb-4">Sound Kits</h2>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="services" className="mt-0">
+                <Card className="bg-black/60 border border-yellow-500/20">
+                  <CardContent className="p-6">
+                    <h2 className="text-2xl font-bold text-white mb-4">Services</h2>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="collab" className="mt-0">
+                <Card className="bg-black/60 border border-yellow-500/20">
+                  <CardContent className="p-6">
+                    <h2 className="text-2xl font-bold text-white mb-4">Collaboration</h2>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="social" className="mt-0">
+                <Card className="bg-black/60 border border-yellow-500/20">
+                  <CardContent className="p-6">
+                    <h2 className="text-2xl font-bold text-white mb-4">Social Media</h2>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </div>
           </Tabs>
         </div>
       </div>
@@ -133,87 +180,6 @@ const ArtistProfile = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8 mb-24">
-        <TabsContent value="beats" className="mt-0">
-          <Card className="bg-black/60 border border-yellow-500/20">
-            <CardContent className="p-6">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-yellow-500/20">
-                    <TableHead className="text-yellow-500">Title</TableHead>
-                    <TableHead className="text-yellow-500">BPM</TableHead>
-                    <TableHead className="text-yellow-500">Key</TableHead>
-                    <TableHead className="text-yellow-500">Genre</TableHead>
-                    <TableHead className="text-yellow-500">Price</TableHead>
-                    <TableHead className="text-yellow-500">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {featuredBeats.map((beat, index) => (
-                    <TableRow key={beat.id} className="border-yellow-500/20">
-                      <TableCell className="font-medium text-white">{beat.title}</TableCell>
-                      <TableCell>{beat.bpm}</TableCell>
-                      <TableCell>{beat.key}</TableCell>
-                      <TableCell>{beat.genres.join(", ")}</TableCell>
-                      <TableCell className="text-yellow-500">${beat.price}</TableCell>
-                      <TableCell>
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => {
-                            setCurrentBeatIndex(index);
-                            setIsPlaying(true);
-                          }}
-                        >
-                          <Play className="w-4 h-4 text-yellow-500" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="kits" className="mt-0">
-          <Card className="bg-black/60 border border-yellow-500/20">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-white mb-4">Sound Kits</h2>
-              {/* Sound kits content */}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="services" className="mt-0">
-          <Card className="bg-black/60 border border-yellow-500/20">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-white mb-4">Services</h2>
-              {/* Services content */}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="collab" className="mt-0">
-          <Card className="bg-black/60 border border-yellow-500/20">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-white mb-4">Collaboration</h2>
-              {/* Collaboration content */}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="social" className="mt-0">
-          <Card className="bg-black/60 border border-yellow-500/20">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-bold text-white mb-4">Social Media</h2>
-              {/* Social media content */}
-            </CardContent>
-          </Card>
-        </TabsContent>
       </div>
     </div>
   );
