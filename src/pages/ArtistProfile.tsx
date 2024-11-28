@@ -1,11 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Music2, Package, Handshake, Users, Globe, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
+import { Music2, Package, Handshake, Users, Globe, Play, Pause, SkipBack, SkipForward, Volume2, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { featuredBeats } from "@/data/featuredBeats";
+import { soundKits } from "@/data/soundKits";
 import BeatTable from "@/components/artist/BeatTable";
+import KitCard from "@/components/KitCard";
 
 const ArtistProfile = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -44,9 +46,8 @@ const ArtistProfile = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
-      {/* Hero Section */}
+      {/* Hero Section - Removed gradient overlay */}
       <div className="relative h-64 bg-black">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black"></div>
         <div className="container mx-auto px-4 h-full flex items-end pb-8">
           <div className="flex items-center gap-6">
             <img
@@ -97,7 +98,7 @@ const ArtistProfile = () => {
 
             {/* Main Content */}
             <div className="container mx-auto px-4 py-8 mb-24">
-              <TabsContent value="beats" className="mt-0">
+              <TabsContent value="beats">
                 <Card className="bg-black/60 border border-yellow-500/20">
                   <CardContent className="p-6">
                     <BeatTable 
@@ -109,34 +110,160 @@ const ArtistProfile = () => {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="kits" className="mt-0">
+              <TabsContent value="kits">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {soundKits.slice(0, 6).map((kit) => (
+                    <KitCard key={kit.id} kit={kit} />
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="services">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="bg-black/60 border border-yellow-500/20">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-yellow-500">Mixing & Mastering</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-white">Professional mixing and mastering services for your tracks</p>
+                      <ul className="space-y-2">
+                        {["24-bit WAV delivery", "3 revisions included", "2-day turnaround", "Stem mixing available"].map((feature, index) => (
+                          <li key={index} className="flex items-center gap-2 text-white">
+                            <CheckCircle2 className="w-4 h-4 text-yellow-500" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
+                        Starting at $150
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-black/60 border border-yellow-500/20">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-yellow-500">Custom Production</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-white">Tailored beat production for your project</p>
+                      <ul className="space-y-2">
+                        {["Original composition", "Full ownership rights", "Unlimited revisions", "Source files included"].map((feature, index) => (
+                          <li key={index} className="flex items-center gap-2 text-white">
+                            <CheckCircle2 className="w-4 h-4 text-yellow-500" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
+                        Starting at $500
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="bg-black/60 border border-yellow-500/20">
+                    <CardHeader>
+                      <CardTitle className="text-2xl text-yellow-500">1-on-1 Mentoring</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-white">Learn music production from an industry professional</p>
+                      <ul className="space-y-2">
+                        {["Weekly sessions", "Project feedback", "Industry insights", "Production techniques"].map((feature, index) => (
+                          <li key={index} className="flex items-center gap-2 text-white">
+                            <CheckCircle2 className="w-4 h-4 text-yellow-500" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
+                        $75/hour
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="collab">
                 <Card className="bg-black/60 border border-yellow-500/20">
                   <CardContent className="p-6">
-                    <h2 className="text-2xl font-bold text-white mb-4">Sound Kits</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-6">
+                        <h2 className="text-2xl font-bold text-yellow-500">Collaboration Opportunities</h2>
+                        <p className="text-white">I'm always open to collaborating with talented artists and producers. Here's what I offer:</p>
+                        <ul className="space-y-4">
+                          {[
+                            "Remote collaboration sessions",
+                            "Split sheet agreements",
+                            "Project-based partnerships",
+                            "Feature opportunities",
+                            "Beat battles and challenges"
+                          ].map((item, index) => (
+                            <li key={index} className="flex items-center gap-2 text-white">
+                              <CheckCircle2 className="w-4 h-4 text-yellow-500" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                        <Button className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
+                          Submit Collaboration Request
+                        </Button>
+                      </div>
+                      <div className="space-y-6">
+                        <h2 className="text-2xl font-bold text-yellow-500">Past Collaborations</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                          {[1, 2, 3, 4].map((item) => (
+                            <div key={item} className="bg-black/40 p-4 rounded-lg border border-yellow-500/20">
+                              <img
+                                src={`https://images.unsplash.com/photo-148859052850${item}-98d2b5aba04b`}
+                                alt={`Collaboration ${item}`}
+                                className="w-full h-32 object-cover rounded-lg mb-2"
+                              />
+                              <p className="text-white font-medium">Project {item}</p>
+                              <p className="text-gray-400 text-sm">with Artist {item}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="services" className="mt-0">
+              <TabsContent value="social">
                 <Card className="bg-black/60 border border-yellow-500/20">
                   <CardContent className="p-6">
-                    <h2 className="text-2xl font-bold text-white mb-4">Services</h2>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="collab" className="mt-0">
-                <Card className="bg-black/60 border border-yellow-500/20">
-                  <CardContent className="p-6">
-                    <h2 className="text-2xl font-bold text-white mb-4">Collaboration</h2>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="social" className="mt-0">
-                <Card className="bg-black/60 border border-yellow-500/20">
-                  <CardContent className="p-6">
-                    <h2 className="text-2xl font-bold text-white mb-4">Social Media</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-6">
+                        <h2 className="text-2xl font-bold text-yellow-500">Connect With Me</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                          {Object.entries(artist.social).map(([platform, url]) => (
+                            <Button
+                              key={platform}
+                              variant="outline"
+                              className="w-full border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black"
+                              onClick={() => window.open(url, '_blank')}
+                            >
+                              {platform.charAt(0).toUpperCase() + platform.slice(1)}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="space-y-6">
+                        <h2 className="text-2xl font-bold text-yellow-500">Latest Updates</h2>
+                        <div className="space-y-4">
+                          {[
+                            "New beat pack dropping next week! 🎵",
+                            "Just wrapped up a collaboration with @artist 🔥",
+                            "Check out my latest tutorial video 📺",
+                            "Studio session highlights coming soon! 🎹"
+                          ].map((update, index) => (
+                            <div key={index} className="bg-black/40 p-4 rounded-lg border border-yellow-500/20">
+                              <p className="text-white">{update}</p>
+                              <p className="text-gray-400 text-sm mt-2">{index + 1}d ago</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
