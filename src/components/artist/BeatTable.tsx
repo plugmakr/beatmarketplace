@@ -28,9 +28,9 @@ const BeatTable = ({ beats, onPlay, currentBeatIndex }: BeatTableProps) => {
         {beats.map((beat, index) => (
           <TableRow key={beat.id} className="border-yellow-500/20">
             <TableCell className="font-medium text-white">{beat.title}</TableCell>
-            <TableCell>{beat.bpm}</TableCell>
-            <TableCell>{beat.key}</TableCell>
-            <TableCell>{beat.genres.join(", ")}</TableCell>
+            <TableCell className="text-white">{beat.bpm}</TableCell>
+            <TableCell className="text-white">{beat.key}</TableCell>
+            <TableCell className="text-white">{beat.genres.join(", ")}</TableCell>
             <TableCell className="text-yellow-500">${beat.price}</TableCell>
             <TableCell>
               <Rating initialRating={beat.rating} readonly size="sm" />
