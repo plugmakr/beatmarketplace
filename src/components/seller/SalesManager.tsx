@@ -38,7 +38,7 @@ const SalesManager = () => {
               <div className="text-center">
                 <DollarSign className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
                 <p className="text-2xl font-bold text-white">$1,234</p>
-                <p className="text-gray-400">Total Sales</p>
+                <p className="text-gray-200">Total Sales</p>
               </div>
             </CardContent>
           </Card>
@@ -47,22 +47,22 @@ const SalesManager = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Product</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Buyer</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-yellow-500">Product</TableHead>
+              <TableHead className="text-yellow-500">Price</TableHead>
+              <TableHead className="text-yellow-500">Buyer</TableHead>
+              <TableHead className="text-yellow-500">Date</TableHead>
+              <TableHead className="text-yellow-500">Status</TableHead>
+              <TableHead className="text-yellow-500">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {salesData.map((sale) => (
               <TableRow key={sale.id}>
-                <TableCell>{sale.product}</TableCell>
-                <TableCell>${sale.price}</TableCell>
-                <TableCell>{sale.buyer}</TableCell>
-                <TableCell>{sale.date}</TableCell>
-                <TableCell>{sale.status}</TableCell>
+                <TableCell className="text-white">{sale.product}</TableCell>
+                <TableCell className="text-white">${sale.price}</TableCell>
+                <TableCell className="text-white">{sale.buyer}</TableCell>
+                <TableCell className="text-white">{sale.date}</TableCell>
+                <TableCell className="text-white">{sale.status}</TableCell>
                 <TableCell>
                   <Button variant="outline" size="sm" className="text-yellow-500 border-yellow-500">
                     <Download className="w-4 h-4 mr-2" />

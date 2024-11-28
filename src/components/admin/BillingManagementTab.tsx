@@ -36,22 +36,22 @@ const BillingManagementTab = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Customer</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead className="text-yellow-500">Customer</TableHead>
+                <TableHead className="text-yellow-500">Amount</TableHead>
+                <TableHead className="text-yellow-500">Status</TableHead>
+                <TableHead className="text-yellow-500">Date</TableHead>
+                <TableHead className="text-yellow-500">Type</TableHead>
+                <TableHead className="text-yellow-500">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {billingData.map((bill) => (
                 <TableRow key={bill.id}>
-                  <TableCell>{bill.customer}</TableCell>
-                  <TableCell>${bill.amount}</TableCell>
-                  <TableCell>{bill.status}</TableCell>
-                  <TableCell>{bill.date}</TableCell>
-                  <TableCell>{bill.type}</TableCell>
+                  <TableCell className="text-white">{bill.customer}</TableCell>
+                  <TableCell className="text-white">${bill.amount}</TableCell>
+                  <TableCell className="text-white">{bill.status}</TableCell>
+                  <TableCell className="text-white">{bill.date}</TableCell>
+                  <TableCell className="text-white">{bill.type}</TableCell>
                   <TableCell>
                     <Button variant="outline" size="sm" className="text-yellow-500 border-yellow-500">
                       <Download className="w-4 h-4 mr-2" />
