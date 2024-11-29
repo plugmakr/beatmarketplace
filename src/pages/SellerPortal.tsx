@@ -7,6 +7,10 @@ import BeatLibrary from "@/components/seller/BeatLibrary";
 import KitLibrary from "@/components/seller/KitLibrary";
 import UploadBeatForm from "@/components/seller/UploadBeatForm";
 import CreateKitForm from "@/components/seller/CreateKitForm";
+import CustomerManager from "@/components/seller/CustomerManager";
+import MarketingManager from "@/components/seller/MarketingManager";
+import EmailManager from "@/components/seller/EmailManager";
+import SupportManager from "@/components/seller/SupportManager";
 
 const SellerPortal = () => {
   const navigate = useNavigate();
@@ -30,6 +34,10 @@ const SellerPortal = () => {
             <TabsTrigger value="sales">Sales Manager</TabsTrigger>
             <TabsTrigger value="beats">Beat Library</TabsTrigger>
             <TabsTrigger value="kits">Kit Library</TabsTrigger>
+            <TabsTrigger value="customers">Customers</TabsTrigger>
+            <TabsTrigger value="marketing">Marketing</TabsTrigger>
+            <TabsTrigger value="email">Email</TabsTrigger>
+            <TabsTrigger value="support">Support</TabsTrigger>
             <TabsTrigger value="upload-beat">Upload Beat</TabsTrigger>
             <TabsTrigger value="create-kit">Create Kit</TabsTrigger>
             <TabsTrigger value="website">Website Settings</TabsTrigger>
@@ -45,6 +53,22 @@ const SellerPortal = () => {
 
           <TabsContent value="kits">
             <KitLibrary />
+          </TabsContent>
+
+          <TabsContent value="customers">
+            <CustomerManager />
+          </TabsContent>
+
+          <TabsContent value="marketing">
+            <MarketingManager />
+          </TabsContent>
+
+          <TabsContent value="email">
+            <EmailManager />
+          </TabsContent>
+
+          <TabsContent value="support">
+            <SupportManager />
           </TabsContent>
 
           <TabsContent value="upload-beat">
