@@ -12,7 +12,7 @@ const SupportManager = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Open Tickets</CardTitle>
           </CardHeader>
@@ -20,7 +20,7 @@ const SupportManager = () => {
             <p className="text-2xl text-white">12</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Avg Response Time</CardTitle>
           </CardHeader>
@@ -28,7 +28,7 @@ const SupportManager = () => {
             <p className="text-2xl text-white">2.5h</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Resolution Rate</CardTitle>
           </CardHeader>
@@ -36,7 +36,7 @@ const SupportManager = () => {
             <p className="text-2xl text-white">94%</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Customer Satisfaction</CardTitle>
           </CardHeader>
@@ -46,7 +46,7 @@ const SupportManager = () => {
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-black/60 border border-yellow-500/20">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle className="text-yellow-500">Support Tickets</CardTitle>
           <Button className="bg-yellow-500 hover:bg-yellow-600">Create Ticket</Button>

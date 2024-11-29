@@ -12,7 +12,7 @@ const MarketingManager = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Campaign Performance</CardTitle>
           </CardHeader>
@@ -34,7 +34,7 @@ const MarketingManager = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Quick Actions</CardTitle>
           </CardHeader>
@@ -46,7 +46,7 @@ const MarketingManager = () => {
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-black/60 border border-yellow-500/20">
         <CardHeader>
           <CardTitle className="text-yellow-500">Active Campaigns</CardTitle>
         </CardHeader>

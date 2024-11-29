@@ -12,7 +12,7 @@ const EmailManager = () => {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Total Subscribers</CardTitle>
           </CardHeader>
@@ -20,7 +20,7 @@ const EmailManager = () => {
             <p className="text-2xl text-white">2,547</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Average Open Rate</CardTitle>
           </CardHeader>
@@ -28,7 +28,7 @@ const EmailManager = () => {
             <p className="text-2xl text-white">45.8%</p>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-black/60 border border-yellow-500/20">
           <CardHeader>
             <CardTitle className="text-yellow-500">Click Rate</CardTitle>
           </CardHeader>
@@ -38,7 +38,7 @@ const EmailManager = () => {
         </Card>
       </div>
 
-      <Card>
+      <Card className="bg-black/60 border border-yellow-500/20">
         <CardHeader className="flex flex-row justify-between items-center">
           <CardTitle className="text-yellow-500">Email Campaigns</CardTitle>
           <Button className="bg-yellow-500 hover:bg-yellow-600">Create Campaign</Button>

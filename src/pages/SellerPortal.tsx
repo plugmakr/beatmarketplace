@@ -11,6 +11,7 @@ import CustomerManager from "@/components/seller/CustomerManager";
 import MarketingManager from "@/components/seller/MarketingManager";
 import EmailManager from "@/components/seller/EmailManager";
 import SupportManager from "@/components/seller/SupportManager";
+import VideoManager from "@/components/seller/VideoManager";
 
 const SellerPortal = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const SellerPortal = () => {
             <TabsTrigger value="marketing">Marketing</TabsTrigger>
             <TabsTrigger value="email">Email</TabsTrigger>
             <TabsTrigger value="support">Support</TabsTrigger>
+            <TabsTrigger value="videos">Videos</TabsTrigger>
             <TabsTrigger value="upload-beat">Upload Beat</TabsTrigger>
             <TabsTrigger value="create-kit">Create Kit</TabsTrigger>
             <TabsTrigger value="website">Website Settings</TabsTrigger>
@@ -69,6 +71,10 @@ const SellerPortal = () => {
 
           <TabsContent value="support">
             <SupportManager />
+          </TabsContent>
+
+          <TabsContent value="videos">
+            <VideoManager />
           </TabsContent>
 
           <TabsContent value="upload-beat">
