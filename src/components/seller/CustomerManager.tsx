@@ -10,13 +10,13 @@ const CustomerManager = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="bg-black/60 border border-yellow-500/20">
         <CardHeader>
           <CardTitle className="text-yellow-500">Customer Overview</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <Card>
+            <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="text-lg text-yellow-500">Total Customers</CardTitle>
               </CardHeader>
@@ -24,7 +24,7 @@ const CustomerManager = () => {
                 <p className="text-2xl text-white">156</p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="text-lg text-yellow-500">Active This Month</CardTitle>
               </CardHeader>
@@ -32,7 +32,7 @@ const CustomerManager = () => {
                 <p className="text-2xl text-white">43</p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-black/60 border border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="text-lg text-yellow-500">Lifetime Value</CardTitle>
               </CardHeader>

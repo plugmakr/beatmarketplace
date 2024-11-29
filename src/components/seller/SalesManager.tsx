@@ -33,7 +33,7 @@ const SalesManager = () => {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="bg-black/40 border border-yellow-500/20">
+          <Card className="bg-black/60 border border-yellow-500/20">
             <CardContent className="pt-6">
               <div className="text-center">
                 <DollarSign className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
