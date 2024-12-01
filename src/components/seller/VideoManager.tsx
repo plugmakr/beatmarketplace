@@ -1,13 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { youtube_v3 } from "@googleapis/youtube";
 import { useToast } from "@/components/ui/use-toast";
 
+interface Video {
+  id: string;
+  title: string;
+  embedId: string;
+  views: string;
+  likes: string;
+}
+
 const VideoManager = () => {
-  const [videos, setVideos] = useState<any[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [apiKey, setApiKey] = useState("");
   const [channelId, setChannelId] = useState("");
   const { toast } = useToast();
@@ -23,51 +30,53 @@ const VideoManager = () => {
     }
 
     try {
-      const youtube = new youtube_v3.Youtube({
-        auth: apiKey,
-      });
+      // First, get the uploads playlist ID
+      const channelResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${channelId}&key=${apiKey}`
+      );
+      const channelData = await channelResponse.json();
 
-      const response = await youtube.channels.list({
-        id: [channelId],
-        part: ["statistics", "contentDetails"],
-      });
-
-      if (response.data.items && response.data.items[0]) {
-        const playlistId = response.data.items[0].contentDetails?.relatedPlaylists?.uploads;
-        
-        const videosResponse = await youtube.playlistItems.list({
-          playlistId: playlistId,
-          part: ["snippet", "contentDetails"],
-          maxResults: 10,
-        });
-
-        const videoIds = videosResponse.data.items?.map(
-          (item) => item.contentDetails?.videoId
-        ) || [];
-
-        const videoStatsResponse = await youtube.videos.list({
-          id: videoIds as string[],
-          part: ["statistics"],
-        });
-
-        const videoData = videosResponse.data.items?.map((item, index) => ({
-          id: item.contentDetails?.videoId,
-          title: item.snippet?.title,
-          embedId: item.contentDetails?.videoId,
-          views: videoStatsResponse.data.items?.[index]?.statistics?.viewCount || "0",
-          likes: videoStatsResponse.data.items?.[index]?.statistics?.likeCount || "0",
-        }));
-
-        setVideos(videoData || []);
-        toast({
-          title: "Success",
-          description: "Videos fetched successfully",
-        });
+      if (!channelData.items?.[0]) {
+        throw new Error("Channel not found");
       }
+
+      const playlistId = channelData.items[0].contentDetails?.relatedPlaylists?.uploads;
+
+      // Get videos from the uploads playlist
+      const videosResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=${playlistId}&maxResults=10&key=${apiKey}`
+      );
+      const videosData = await videosResponse.json();
+
+      if (!videosData.items) {
+        throw new Error("No videos found");
+      }
+
+      // Get video statistics
+      const videoIds = videosData.items.map((item: any) => item.contentDetails.videoId).join(',');
+      const statsResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoIds}&key=${apiKey}`
+      );
+      const statsData = await statsResponse.json();
+
+      // Combine video data with statistics
+      const videoData = videosData.items.map((item: any, index: number) => ({
+        id: item.contentDetails.videoId,
+        title: item.snippet.title,
+        embedId: item.contentDetails.videoId,
+        views: statsData.items[index]?.statistics?.viewCount || "0",
+        likes: statsData.items[index]?.statistics?.likeCount || "0",
+      }));
+
+      setVideos(videoData);
+      toast({
+        title: "Success",
+        description: "Videos fetched successfully",
+      });
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to fetch YouTube data. Please check your API key and Channel ID.",
+        description: error instanceof Error ? error.message : "Failed to fetch YouTube data. Please check your API key and Channel ID.",
         variant: "destructive",
       });
     }
