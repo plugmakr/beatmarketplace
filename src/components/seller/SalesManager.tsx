@@ -1,78 +1,56 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { BarChart, Download, DollarSign } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const SalesManager = () => {
-  const salesData = [
-    {
-      id: "1",
-      product: "Summer Vibes Beat",
-      price: 29.99,
-      buyer: "John Producer",
-      date: "2024-02-20",
-      status: "Completed"
+  const { profile } = useAuth();
+
+  // This is a placeholder query - you'll need to update it when we add the sales table
+  const { data: salesData, isLoading } = useQuery({
+    queryKey: ['sales', profile?.id],
+    queryFn: async () => {
+      // Placeholder data until we implement the sales table
+      return [
+        { date: '2024-01', amount: 1200 },
+        { date: '2024-02', amount: 1800 },
+        { date: '2024-03', amount: 2400 },
+      ];
     },
-    {
-      id: "2",
-      product: "Urban Flow Kit",
-      price: 49.99,
-      buyer: "Studio Master",
-      date: "2024-02-19",
-      status: "Processing"
-    }
-  ];
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Card className="bg-black/60 border border-yellow-500/20">
       <CardHeader>
-        <CardTitle className="text-yellow-500 flex items-center gap-2">
-          <BarChart className="w-4 h-4" />
-          Sales Overview
-        </CardTitle>
+        <CardTitle className="text-yellow-500">Sales Overview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <Card className="bg-black/60 border border-yellow-500/20">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <DollarSign className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-                <p className="text-2xl font-bold text-white">$1,234</p>
-                <p className="text-gray-200">Total Sales</p>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={salesData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+              <XAxis dataKey="date" stroke="#666" />
+              <YAxis stroke="#666" />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: '#000', 
+                  border: '1px solid rgba(234, 179, 8, 0.2)' 
+                }}
+              />
+              <Line 
+                type="monotone" 
+                dataKey="amount" 
+                stroke="#eab308" 
+                strokeWidth={2}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="text-yellow-500">Product</TableHead>
-              <TableHead className="text-yellow-500">Price</TableHead>
-              <TableHead className="text-yellow-500">Buyer</TableHead>
-              <TableHead className="text-yellow-500">Date</TableHead>
-              <TableHead className="text-yellow-500">Status</TableHead>
-              <TableHead className="text-yellow-500">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {salesData.map((sale) => (
-              <TableRow key={sale.id}>
-                <TableCell className="text-white">{sale.product}</TableCell>
-                <TableCell className="text-white">${sale.price}</TableCell>
-                <TableCell className="text-white">{sale.buyer}</TableCell>
-                <TableCell className="text-white">{sale.date}</TableCell>
-                <TableCell className="text-white">{sale.status}</TableCell>
-                <TableCell>
-                  <Button variant="outline" size="sm" className="text-yellow-500 border-yellow-500">
-                    <Download className="w-4 h-4 mr-2" />
-                    Receipt
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
       </CardContent>
     </Card>
   );
