@@ -3,6 +3,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import Login from "@/pages/auth/Login";
 import Index from "./pages/Index";
 import BrowseBeats from "./pages/BrowseBeats";
 import BrowseKits from "./pages/BrowseKits";
@@ -19,26 +22,43 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/browse-beats" element={<BrowseBeats />} />
-          <Route path="/browse-kits" element={<BrowseKits />} />
-          <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/beats/:id" element={<BeatDetails />} />
-          <Route path="/kits/:id" element={<KitDetails />} />
-          <Route path="/seller/:id" element={<ArtistProfile />} />
-          <Route path="/artists/:id" element={<ArtistProfile />} />
-          <Route path="/admin" element={<AdminPortal />} />
-          <Route path="/artist-portal" element={<ArtistPortal />} />
-          <Route path="/seller-portal" element={<SellerPortal />} />
-          <Route path="/pricing" element={<Pricing />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/browse-beats" element={<BrowseBeats />} />
+            <Route path="/browse-kits" element={<BrowseKits />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/beats/:id" element={<BeatDetails />} />
+            <Route path="/kits/:id" element={<KitDetails />} />
+            <Route path="/seller/:id" element={<ArtistProfile />} />
+            <Route path="/artists/:id" element={<ArtistProfile />} />
+            <Route path="/auth/login" element={<Login />} />
+            
+            {/* Protected Routes */}
+            <Route path="/admin" element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <AdminPortal />
+              </ProtectedRoute>
+            } />
+            <Route path="/artist-portal" element={
+              <ProtectedRoute allowedRoles={['artist']}>
+                <ArtistPortal />
+              </ProtectedRoute>
+            } />
+            <Route path="/seller-portal" element={
+              <ProtectedRoute allowedRoles={['seller']}>
+                <SellerPortal />
+              </ProtectedRoute>
+            } />
+            <Route path="/pricing" element={<Pricing />} />
+          </Routes>
+        </TooltipProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
