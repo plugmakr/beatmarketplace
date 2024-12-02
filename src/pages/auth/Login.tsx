@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 
 const Login = () => {
@@ -12,6 +12,31 @@ const Login = () => {
   const location = useLocation();
   const [selectedRole, setSelectedRole] = useState<string>('artist');
   const { toast } = useToast();
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_UP') {
+        toast({
+          title: "Welcome!",
+          description: "Please check your email to confirm your account.",
+        });
+      } else if (event === 'USER_UPDATED') {
+        toast({
+          title: "Success!",
+          description: "Your account has been updated.",
+        });
+      } else if (event === 'SIGNED_IN') {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [toast]);
 
   if (session && profile) {
     const from = location.state?.from?.pathname || getDefaultRoute(profile.role);
@@ -64,7 +89,7 @@ const Login = () => {
                   email_label: 'Email',
                   password_label: 'Password',
                   button_label: 'Sign up',
-                  link_text: 'Don\'t have an account? Sign up',
+                  link_text: "Don't have an account? Sign up",
                   confirmation_text: 'Check your email for the confirmation link',
                 },
               },
