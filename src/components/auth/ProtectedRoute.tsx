@@ -15,6 +15,15 @@ const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) => {
   }
 
   if (allowedRoles && profile && !allowedRoles.includes(profile.role || '')) {
+    // Redirect to the appropriate dashboard based on user role
+    if (profile.role === 'admin') {
+      return <Navigate to="/admin" replace />;
+    } else if (profile.role === 'seller') {
+      return <Navigate to="/seller-portal" replace />;
+    } else if (profile.role === 'artist') {
+      return <Navigate to="/artist-portal" replace />;
+    }
+    // Default fallback
     return <Navigate to="/" replace />;
   }
 

@@ -12,6 +12,7 @@ const Login = () => {
   const [selectedRole, setSelectedRole] = useState<string>('artist');
 
   if (session && profile) {
+    // Get the redirect path from location state or use the default route based on role
     const from = location.state?.from?.pathname || getDefaultRoute(profile.role);
     return <Navigate to={from} replace />;
   }

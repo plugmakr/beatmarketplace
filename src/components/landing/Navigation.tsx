@@ -11,7 +11,7 @@ import {
 
 const Navigation = () => {
   const navigate = useNavigate();
-  const { session, signOut } = useAuth();
+  const { session, signOut, profile } = useAuth();
   const { toast } = useToast();
 
   const handleSignOut = async () => {
@@ -28,6 +28,45 @@ const Navigation = () => {
         description: "There was a problem signing you out.",
         variant: "destructive",
       });
+    }
+  };
+
+  const getPortalLink = () => {
+    if (!profile?.role) return null;
+    
+    switch (profile.role) {
+      case 'admin':
+        return (
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-yellow-500 hover:text-yellow-400"
+            onClick={() => navigate('/admin')}
+          >
+            Admin Portal
+          </Button>
+        );
+      case 'seller':
+        return (
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-yellow-500 hover:text-yellow-400"
+            onClick={() => navigate('/seller-portal')}
+          >
+            Seller Portal
+          </Button>
+        );
+      case 'artist':
+        return (
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-yellow-500 hover:text-yellow-400"
+            onClick={() => navigate('/artist-portal')}
+          >
+            Artist Portal
+          </Button>
+        );
+      default:
+        return null;
     }
   };
 
@@ -62,33 +101,7 @@ const Navigation = () => {
             </Button>
           </Link>
           
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="w-full justify-start bg-yellow-500 hover:bg-yellow-400 text-black">
-                Portals
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-black/95 border border-yellow-500/20">
-              <DropdownMenuItem 
-                className="text-yellow-500 hover:text-yellow-400 cursor-pointer"
-                onClick={() => navigate('/admin')}
-              >
-                Admin Portal
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="text-yellow-500 hover:text-yellow-400 cursor-pointer"
-                onClick={() => navigate('/artist-portal')}
-              >
-                Artist Portal
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="text-yellow-500 hover:text-yellow-400 cursor-pointer"
-                onClick={() => navigate('/seller-portal')}
-              >
-                Seller Portal
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {session && getPortalLink()}
 
           {session ? (
             <Button 
