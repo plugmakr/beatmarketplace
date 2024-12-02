@@ -14,8 +14,13 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_UP') {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
+      } else if (event === 'SIGNED_UP') {
         toast({
           title: "Welcome!",
           description: "Please check your email to confirm your account.",
@@ -24,11 +29,6 @@ const Login = () => {
         toast({
           title: "Success!",
           description: "Your account has been updated.",
-        });
-      } else if (event === 'SIGNED_IN') {
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
         });
       }
     });
