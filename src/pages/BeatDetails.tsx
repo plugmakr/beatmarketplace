@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import Navigation from "@/components/landing/Navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Play, AudioWaveform } from "lucide-react";
@@ -54,8 +53,7 @@ const BeatDetails = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      <Navigation />
-      <div className="container mx-auto px-4 py-20">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <img
