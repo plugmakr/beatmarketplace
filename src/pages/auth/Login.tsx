@@ -14,7 +14,6 @@ const Login = () => {
   const { toast } = useToast();
 
   if (session && profile) {
-    // Get the redirect path from location state or use the default route based on role
     const from = location.state?.from?.pathname || getDefaultRoute(profile.role);
     return <Navigate to={from} replace />;
   }
@@ -56,10 +55,19 @@ const Login = () => {
             }}
             localization={{
               variables: {
+                sign_in: {
+                  email_label: 'Email',
+                  password_label: 'Password',
+                  button_label: 'Sign in',
+                },
                 sign_up: {
-                  email_exists_error: 'An account with this email already exists. Please sign in instead.',
-                }
-              }
+                  email_label: 'Email',
+                  password_label: 'Password',
+                  button_label: 'Sign up',
+                  link_text: 'Don\'t have an account? Sign up',
+                  confirmation_text: 'Check your email for the confirmation link',
+                },
+              },
             }}
             providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
