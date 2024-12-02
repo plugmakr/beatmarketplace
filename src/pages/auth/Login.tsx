@@ -5,17 +5,35 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Navigate, useLocation } from 'react-router-dom';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from 'react';
+import { useToast } from '@/components/ui/use-toast';
 
 const Login = () => {
   const { session, profile } = useAuth();
   const location = useLocation();
   const [selectedRole, setSelectedRole] = useState<string>('artist');
+  const { toast } = useToast();
 
   if (session && profile) {
     // Get the redirect path from location state or use the default route based on role
     const from = location.state?.from?.pathname || getDefaultRoute(profile.role);
     return <Navigate to={from} replace />;
   }
+
+  const handleAuthError = (error: Error) => {
+    if (error.message.includes('user_already_exists')) {
+      toast({
+        title: "Account Already Exists",
+        description: "Please sign in with your existing account instead of creating a new one.",
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Authentication Error",
+        description: error.message,
+        variant: "destructive"
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
@@ -54,6 +72,7 @@ const Login = () => {
             }}
             providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
+            onError={handleAuthError}
             additionalData={{
               role: selectedRole
             }}
