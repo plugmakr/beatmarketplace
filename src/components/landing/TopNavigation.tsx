@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/components/ui/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +11,25 @@ import {
 
 const TopNavigation = () => {
   const navigate = useNavigate();
+  const { session, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out successfully",
+        description: "You have been logged out of your account.",
+      });
+      navigate('/');
+    } catch (error) {
+      toast({
+        title: "Error signing out",
+        description: "There was a problem signing you out.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-black border-b border-yellow-500/20 z-50">
@@ -69,6 +90,22 @@ const TopNavigation = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {session ? (
+              <Button 
+                variant="ghost" 
+                className="text-red-500 hover:text-red-400"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Link to="/auth/login">
+                <Button variant="ghost" className="text-yellow-500 hover:text-yellow-400">
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
