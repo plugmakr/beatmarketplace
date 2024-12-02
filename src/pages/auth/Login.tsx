@@ -6,6 +6,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import { AuthChangeEvent } from '@supabase/supabase-js';
 
 const Login = () => {
   const { session, profile } = useAuth();
@@ -14,22 +15,26 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN') {
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
-        });
-      } else if (event === 'SIGNED_UP') {
-        toast({
-          title: "Welcome!",
-          description: "Please check your email to confirm your account.",
-        });
-      } else if (event === 'USER_UPDATED') {
-        toast({
-          title: "Success!",
-          description: "Your account has been updated.",
-        });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent) => {
+      switch (event) {
+        case 'SIGNED_IN':
+          toast({
+            title: "Welcome back!",
+            description: "You have successfully signed in.",
+          });
+          break;
+        case 'USER_UPDATED':
+          toast({
+            title: "Success!",
+            description: "Your account has been updated.",
+          });
+          break;
+        case 'SIGNED_UP':
+          toast({
+            title: "Welcome!",
+            description: "Please check your email to confirm your account.",
+          });
+          break;
       }
     });
 
