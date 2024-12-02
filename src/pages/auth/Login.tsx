@@ -19,22 +19,6 @@ const Login = () => {
     return <Navigate to={from} replace />;
   }
 
-  const handleAuthError = (error: Error) => {
-    if (error.message.includes('user_already_exists')) {
-      toast({
-        title: "Account Already Exists",
-        description: "Please sign in with your existing account instead of creating a new one.",
-        variant: "destructive"
-      });
-    } else {
-      toast({
-        title: "Authentication Error",
-        description: error.message,
-        variant: "destructive"
-      });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
@@ -70,9 +54,15 @@ const Login = () => {
                 },
               },
             }}
+            localization={{
+              variables: {
+                sign_up: {
+                  email_exists_error: 'An account with this email already exists. Please sign in instead.',
+                }
+              }
+            }}
             providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
-            onError={handleAuthError}
             additionalData={{
               role: selectedRole
             }}
