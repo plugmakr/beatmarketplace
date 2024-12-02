@@ -29,10 +29,10 @@ const Login = () => {
             description: "Your account has been updated.",
           });
           break;
-        case 'SIGNED_UP':
+        case 'USER_DELETED':
           toast({
-            title: "Welcome!",
-            description: "Please check your email to confirm your account.",
+            title: "Account Deleted",
+            description: "Your account has been deleted.",
           });
           break;
       }
