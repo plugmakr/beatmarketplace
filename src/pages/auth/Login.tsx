@@ -29,12 +29,6 @@ const Login = () => {
             description: "Your account has been updated.",
           });
           break;
-        case 'USER_DELETED':
-          toast({
-            title: "Account Deleted",
-            description: "Your account has been deleted.",
-          });
-          break;
       }
     });
 
