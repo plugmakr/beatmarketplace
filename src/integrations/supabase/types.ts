@@ -9,6 +9,188 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      beats: {
+        Row: {
+          audio_url: string | null
+          bpm: number
+          created_at: string
+          id: string
+          image_url: string | null
+          key: string
+          price: number
+          producer: string
+          seller_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          audio_url?: string | null
+          bpm: number
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          key: string
+          price: number
+          producer: string
+          seller_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          audio_url?: string | null
+          bpm?: number
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          key?: string
+          price?: number
+          producer?: string
+          seller_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "beats_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      customers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          last_purchase: string | null
+          name: string
+          purchase_count: number | null
+          seller_id: string | null
+          total_spent: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          last_purchase?: string | null
+          name: string
+          purchase_count?: number | null
+          seller_id?: string | null
+          total_spent?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          last_purchase?: string | null
+          name?: string
+          purchase_count?: number | null
+          seller_id?: string | null
+          total_spent?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customers_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_campaigns: {
+        Row: {
+          click_rate: number | null
+          created_at: string
+          id: string
+          name: string
+          open_rate: number | null
+          seller_id: string | null
+          status: string
+          subscriber_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          click_rate?: number | null
+          created_at?: string
+          id?: string
+          name: string
+          open_rate?: number | null
+          seller_id?: string | null
+          status: string
+          subscriber_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          click_rate?: number | null
+          created_at?: string
+          id?: string
+          name?: string
+          open_rate?: number | null
+          seller_id?: string | null
+          status?: string
+          subscriber_count?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_campaigns_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketing_campaigns: {
+        Row: {
+          conversions: number | null
+          created_at: string
+          engagement_rate: number | null
+          id: string
+          name: string
+          reach: number | null
+          seller_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          conversions?: number | null
+          created_at?: string
+          engagement_rate?: number | null
+          id?: string
+          name: string
+          reach?: number | null
+          seller_id?: string | null
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          conversions?: number | null
+          created_at?: string
+          engagement_rate?: number | null
+          id?: string
+          name?: string
+          reach?: number | null
+          seller_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketing_campaigns_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -32,6 +214,160 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
+      }
+      sales: {
+        Row: {
+          amount: number
+          beat_id: string | null
+          created_at: string
+          customer_id: string | null
+          id: string
+          kit_id: string | null
+          seller_id: string | null
+        }
+        Insert: {
+          amount: number
+          beat_id?: string | null
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          kit_id?: string | null
+          seller_id?: string | null
+        }
+        Update: {
+          amount?: number
+          beat_id?: string | null
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          kit_id?: string | null
+          seller_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_beat_id_fkey"
+            columns: ["beat_id"]
+            isOneToOne: false
+            referencedRelation: "beats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sales_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sales_kit_id_fkey"
+            columns: ["kit_id"]
+            isOneToOne: false
+            referencedRelation: "sound_kits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sales_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sound_kits: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          price: number
+          producer: string
+          sample_count: number | null
+          seller_id: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          price: number
+          producer: string
+          sample_count?: number | null
+          seller_id?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          price?: number
+          producer?: string
+          sample_count?: number | null
+          seller_id?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sound_kits_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          id: string
+          priority: string
+          seller_id: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          priority: string
+          seller_id?: string | null
+          status: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          id?: string
+          priority?: string
+          seller_id?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
