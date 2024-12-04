@@ -47,11 +47,7 @@ const Login = () => {
           });
           break;
         default:
-          if (event === 'TOKEN_REFRESHED') {
-            console.log('Token refreshed');
-          } else {
-            console.log('Unhandled auth event:', event);
-          }
+          console.log('Unhandled auth event:', event);
           break;
       }
     });
@@ -122,6 +118,7 @@ const Login = () => {
             additionalData={{
               role: selectedRole
             }}
+            view="sign_in"
           />
         </div>
       </div>
