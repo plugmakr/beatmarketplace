@@ -15,40 +15,17 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    console.log('Current session:', session);
-    console.log('Current profile:', profile);
+    console.log('Login component - Current session:', session);
+    console.log('Login component - Current profile:', profile);
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, currentSession) => {
       console.log('Auth state changed:', event, currentSession);
       
-      switch (event) {
-        case 'SIGNED_IN':
-          toast({
-            title: "Welcome back!",
-            description: "You have successfully signed in.",
-          });
-          break;
-        case 'USER_UPDATED':
-          toast({
-            title: "Success!",
-            description: "Your account has been updated.",
-          });
-          break;
-        case 'SIGNED_OUT':
-          toast({
-            title: "Signed out",
-            description: "You have been signed out.",
-          });
-          break;
-        case 'PASSWORD_RECOVERY':
-          toast({
-            title: "Password Recovery",
-            description: "Check your email for password reset instructions.",
-          });
-          break;
-        default:
-          console.log('Unhandled auth event:', event);
-          break;
+      if (event === 'SIGNED_IN') {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
       }
     });
 
@@ -57,9 +34,11 @@ const Login = () => {
     };
   }, [toast]);
 
+  // If we have both session and profile, redirect to the appropriate portal
   if (session && profile) {
-    console.log('Redirecting to:', location.state?.from?.pathname || getDefaultRoute(profile.role));
-    return <Navigate to={location.state?.from?.pathname || getDefaultRoute(profile.role)} replace />;
+    const redirectPath = location.state?.from?.pathname || getDefaultRoute(profile.role);
+    console.log('Redirecting to:', redirectPath);
+    return <Navigate to={redirectPath} replace />;
   }
 
   return (
@@ -118,7 +97,6 @@ const Login = () => {
             additionalData={{
               role: selectedRole
             }}
-            view="sign_in"
           />
         </div>
       </div>

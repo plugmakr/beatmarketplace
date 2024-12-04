@@ -28,45 +28,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       console.log('Fetching profile for user:', userId);
       
-      const { data, error } = await supabase
+      const { data: profileData, error: profileError } = await supabase
         .from('profiles')
         .select('id, username, role')
         .eq('id', userId)
-        .maybeSingle();
+        .single();
 
-      if (error) {
-        console.error('Error fetching profile:', error);
+      if (profileError) {
+        if (profileError.code === 'PGRST116') {
+          console.log('No profile found, creating default profile...');
+          const { data: newProfile, error: insertError } = await supabase
+            .from('profiles')
+            .insert([{ id: userId, role: 'artist' }])
+            .select()
+            .single();
+
+          if (insertError) {
+            console.error('Error creating default profile:', insertError);
+            toast({
+              title: "Error",
+              description: "Failed to create profile",
+              variant: "destructive"
+            });
+            return;
+          }
+
+          setProfile(newProfile);
+          return;
+        }
+
+        console.error('Error fetching profile:', profileError);
         toast({
           title: "Error",
-          description: error.message,
+          description: profileError.message,
           variant: "destructive"
         });
         return;
       }
 
-      if (!data) {
-        console.log('No profile found, creating default profile...');
-        const { error: insertError } = await supabase
-          .from('profiles')
-          .insert([{ id: userId, role: 'artist' }])
-          .single();
-
-        if (insertError) {
-          console.error('Error creating default profile:', insertError);
-          toast({
-            title: "Error",
-            description: "Failed to create profile",
-            variant: "destructive"
-          });
-          return;
-        }
-
-        setProfile({ id: userId, username: null, role: 'artist' });
-        return;
-      }
-
-      console.log('Profile fetched successfully:', data);
-      setProfile(data);
+      console.log('Profile fetched successfully:', profileData);
+      setProfile(profileData);
     } catch (error) {
       console.error('Unexpected error in fetchProfile:', error);
       toast({
@@ -80,13 +81,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log('Setting up auth subscriptions...');
     
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session:', session);
-      setSession(session);
-      if (session?.user) {
-        fetchProfile(session.user.id);
+    const setupAuth = async () => {
+      const { data: { session: initialSession } } = await supabase.auth.getSession();
+      console.log('Initial session:', initialSession);
+      setSession(initialSession);
+      
+      if (initialSession?.user) {
+        await fetchProfile(initialSession.user.id);
       }
-    });
+    };
+
+    setupAuth();
 
     const {
       data: { subscription },
