@@ -22,35 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
-    console.log('Setting up auth subscriptions...');
-    
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session:', session);
-      setSession(session);
-      if (session) {
-        fetchProfile(session.user.id);
-      }
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      console.log('Auth state changed:', _event, session);
-      setSession(session);
-      if (session) {
-        await fetchProfile(session.user.id);
-      } else {
-        setProfile(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  async function fetchProfile(userId: string) {
+  const fetchProfile = async (userId: string) => {
     console.log('Fetching profile for user:', userId);
     try {
       const { data, error } = await supabase
@@ -71,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       console.log('Fetched profile:', data);
       setProfile(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Unexpected error fetching profile:', error);
       toast({
         title: "Error",
@@ -79,10 +51,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         variant: "destructive"
       });
     }
-  }
+  };
+
+  useEffect(() => {
+    console.log('Setting up auth subscriptions...');
+    
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session:', session);
+      setSession(session);
+      if (session?.user) {
+        fetchProfile(session.user.id);
+      }
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      console.log('Auth state changed:', _event, session);
+      setSession(session);
+      if (session?.user) {
+        await fetchProfile(session.user.id);
+      } else {
+        setProfile(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error);
+      toast({
+        title: "Error signing out",
+        description: error.message,
+        variant: "destructive"
+      });
+      return;
+    }
     navigate('/');
   };
 
