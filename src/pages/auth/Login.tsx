@@ -40,6 +40,25 @@ const Login = () => {
             description: "You have been signed out.",
           });
           break;
+        case 'USER_DELETED':
+          toast({
+            title: "Account Deleted",
+            description: "Your account has been deleted.",
+          });
+          break;
+        case 'PASSWORD_RECOVERY':
+          toast({
+            title: "Password Recovery",
+            description: "Check your email for password reset instructions.",
+          });
+          break;
+        case 'AUTH_ERROR':
+          toast({
+            title: "Authentication Error",
+            description: "There was an error during authentication.",
+            variant: "destructive"
+          });
+          break;
       }
     });
 
@@ -106,14 +125,6 @@ const Login = () => {
             }}
             providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
-            onError={(error) => {
-              console.error('Auth error:', error);
-              toast({
-                title: "Authentication Error",
-                description: error.message,
-                variant: "destructive"
-              });
-            }}
             additionalData={{
               role: selectedRole
             }}
