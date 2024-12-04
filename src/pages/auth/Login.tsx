@@ -15,7 +15,12 @@ const Login = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent) => {
+    console.log('Current session:', session);
+    console.log('Current profile:', profile);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, currentSession) => {
+      console.log('Auth state changed:', event, currentSession);
+      
       switch (event) {
         case 'SIGNED_IN':
           toast({
@@ -29,6 +34,12 @@ const Login = () => {
             description: "Your account has been updated.",
           });
           break;
+        case 'SIGNED_OUT':
+          toast({
+            title: "Signed out",
+            description: "You have been signed out.",
+          });
+          break;
       }
     });
 
@@ -38,8 +49,8 @@ const Login = () => {
   }, [toast]);
 
   if (session && profile) {
-    const from = location.state?.from?.pathname || getDefaultRoute(profile.role);
-    return <Navigate to={from} replace />;
+    console.log('Redirecting to:', location.state?.from?.pathname || getDefaultRoute(profile.role));
+    return <Navigate to={location.state?.from?.pathname || getDefaultRoute(profile.role)} replace />;
   }
 
   return (
@@ -95,6 +106,14 @@ const Login = () => {
             }}
             providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
+            onError={(error) => {
+              console.error('Auth error:', error);
+              toast({
+                title: "Authentication Error",
+                description: error.message,
+                variant: "destructive"
+              });
+            }}
             additionalData={{
               role: selectedRole
             }}
