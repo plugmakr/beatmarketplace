@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .from('profiles')
         .select('id, username, role')
         .eq('id', userId)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching profile:', error);
@@ -38,6 +38,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           description: error.message,
           variant: "destructive"
         });
+        return;
+      }
+
+      if (!data) {
+        console.log('No profile found, creating default profile...');
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert([{ id: userId, role: 'artist' }]);
+
+        if (insertError) {
+          console.error('Error creating default profile:', insertError);
+          return;
+        }
+
+        setProfile({ id: userId, username: null, role: 'artist' });
         return;
       }
 
@@ -92,6 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       return;
     }
+    setProfile(null);
     navigate('/');
   };
 
