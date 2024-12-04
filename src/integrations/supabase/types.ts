@@ -369,6 +369,100 @@ export type Database = {
           },
         ]
       }
+      videos: {
+        Row: {
+          created_at: string
+          id: string
+          likes: number | null
+          seller_id: string | null
+          title: string
+          updated_at: string
+          views: number | null
+          youtube_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          likes?: number | null
+          seller_id?: string | null
+          title: string
+          updated_at?: string
+          views?: number | null
+          youtube_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          likes?: number | null
+          seller_id?: string | null
+          title?: string
+          updated_at?: string
+          views?: number | null
+          youtube_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      website_settings: {
+        Row: {
+          created_at: string
+          custom_css: string | null
+          domain: string | null
+          font_family: string | null
+          id: string
+          layout_style: string | null
+          primary_color: string | null
+          seller_id: string | null
+          seo_description: string | null
+          seo_title: string | null
+          template: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          custom_css?: string | null
+          domain?: string | null
+          font_family?: string | null
+          id?: string
+          layout_style?: string | null
+          primary_color?: string | null
+          seller_id?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          template?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          custom_css?: string | null
+          domain?: string | null
+          font_family?: string | null
+          id?: string
+          layout_style?: string | null
+          primary_color?: string | null
+          seller_id?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          template?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "website_settings_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
