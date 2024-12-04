@@ -15,17 +15,22 @@ const UsersTab = () => {
   const queryClient = useQueryClient();
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
-  // Fetch users
+  // Fetch users with improved error handling and logging
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['users'],
     queryFn: async () => {
+      console.log('Fetching users...');
       const { data: profiles, error } = await supabase
         .from('profiles')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching users:', error);
+        throw error;
+      }
 
+      console.log('Fetched profiles:', profiles);
       return profiles.map((profile): User => ({
         id: profile.id,
         name: profile.username || '',
@@ -41,6 +46,7 @@ const UsersTab = () => {
   // Update user
   const updateUser = useMutation({
     mutationFn: async (data: UserFormData & { id: string }) => {
+      console.log('Updating user:', data);
       const { error } = await supabase
         .from('profiles')
         .update({
@@ -60,6 +66,7 @@ const UsersTab = () => {
       setEditingUser(null);
     },
     onError: (error) => {
+      console.error('Error updating user:', error);
       toast({
         title: "Error",
         description: error.message,
@@ -71,6 +78,7 @@ const UsersTab = () => {
   // Delete user
   const deleteUser = useMutation({
     mutationFn: async (userId: string) => {
+      console.log('Deleting user:', userId);
       const { error } = await supabase
         .from('profiles')
         .delete()
@@ -86,6 +94,7 @@ const UsersTab = () => {
       });
     },
     onError: (error) => {
+      console.error('Error deleting user:', error);
       toast({
         title: "Error",
         description: error.message,
