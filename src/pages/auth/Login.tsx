@@ -40,24 +40,18 @@ const Login = () => {
             description: "You have been signed out.",
           });
           break;
-        case 'USER_DELETED':
-          toast({
-            title: "Account Deleted",
-            description: "Your account has been deleted.",
-          });
-          break;
         case 'PASSWORD_RECOVERY':
           toast({
             title: "Password Recovery",
             description: "Check your email for password reset instructions.",
           });
           break;
-        case 'AUTH_ERROR':
-          toast({
-            title: "Authentication Error",
-            description: "There was an error during authentication.",
-            variant: "destructive"
-          });
+        default:
+          if (event === 'TOKEN_REFRESHED') {
+            console.log('Token refreshed');
+          } else {
+            console.log('Unhandled auth event:', event);
+          }
           break;
       }
     });
