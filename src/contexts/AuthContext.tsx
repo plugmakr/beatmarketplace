@@ -23,8 +23,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { toast } = useToast();
 
   useEffect(() => {
+    console.log('Setting up auth subscriptions...');
+    
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('Initial session:', session);
       setSession(session);
       if (session) {
         fetchProfile(session.user.id);
@@ -34,10 +37,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      console.log('Auth state changed:', _event, session);
       setSession(session);
       if (session) {
-        fetchProfile(session.user.id);
+        await fetchProfile(session.user.id);
       } else {
         setProfile(null);
       }
@@ -47,22 +51,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function fetchProfile(userId: string) {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('id, username, role')
-      .eq('id', userId)
-      .single();
+    console.log('Fetching profile for user:', userId);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, username, role')
+        .eq('id', userId)
+        .single();
 
-    if (error) {
+      if (error) {
+        console.error('Error fetching profile:', error);
+        toast({
+          title: "Error fetching profile",
+          description: error.message,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      console.log('Fetched profile:', data);
+      setProfile(data);
+    } catch (error) {
+      console.error('Unexpected error fetching profile:', error);
       toast({
-        title: "Error fetching profile",
-        description: error.message,
+        title: "Error",
+        description: "An unexpected error occurred while fetching your profile",
         variant: "destructive"
       });
-      return;
     }
-
-    setProfile(data);
   }
 
   const signOut = async () => {
@@ -70,8 +86,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     navigate('/');
   };
 
+  const value = {
+    session,
+    profile,
+    signOut
+  };
+
   return (
-    <AuthContext.Provider value={{ session, profile, signOut }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
