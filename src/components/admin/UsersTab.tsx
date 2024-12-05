@@ -78,22 +78,16 @@ const UsersTab = () => {
   const deleteUser = useMutation({
     mutationFn: async (userId: string) => {
       console.log('Deleting user:', userId);
-      
-      const response = await fetch('https://eshjpvlafdpzobmjlcfv.supabase.co/functions/v1/delete-user', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzaGpwdmxhZmRwem9ibWpsY2Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzMwMjY4NzEsImV4cCI6MjA0ODYwMjg3MX0.G3ivWcT7D0f2QJx2B86sHDFjNnomszIkHYnqre0ZYA4`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
+      const { data, error } = await supabase.functions.invoke('delete-user', {
+        body: { userId },
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to delete user');
+      if (error) {
+        console.error('Error deleting user:', error);
+        throw error;
       }
 
-      return response.json();
+      return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
