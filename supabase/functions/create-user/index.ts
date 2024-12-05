@@ -12,9 +12,15 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabaseClient = createClient(
+    const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
     )
 
     const { email, password, name, role } = await req.json()
@@ -25,7 +31,7 @@ Deno.serve(async (req) => {
     }
 
     // Create user in auth.users
-    const { data: userData, error: createError } = await supabaseClient.auth.admin.createUser({
+    const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
@@ -33,26 +39,37 @@ Deno.serve(async (req) => {
     })
 
     if (createError) {
-      console.error('Error creating user:', createError)
-      throw createError
+      console.error('Error creating auth user:', createError)
+      throw new Error(`Auth error: ${createError.message}`)
+    }
+
+    if (!userData.user) {
+      throw new Error('User creation succeeded but no user was returned')
     }
 
     // Update the profile with the username
-    if (userData.user) {
-      const { error: updateError } = await supabaseClient
-        .from('profiles')
-        .update({ username: name, role })
-        .eq('id', userData.user.id)
+    const { error: updateError } = await supabaseAdmin
+      .from('profiles')
+      .update({ 
+        username: name, 
+        role,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', userData.user.id)
 
-      if (updateError) {
-        console.error('Error updating profile:', updateError)
-        throw updateError
-      }
+    if (updateError) {
+      console.error('Error updating profile:', updateError)
+      // If profile update fails, we should clean up the auth user
+      await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
+      throw new Error(`Profile error: ${updateError.message}`)
     }
 
-    console.log('User created successfully:', userData.user?.id)
+    console.log('User created successfully:', userData.user.id)
     return new Response(
-      JSON.stringify({ message: 'User created successfully', user: userData.user }),
+      JSON.stringify({ 
+        message: 'User created successfully', 
+        user: userData.user 
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200,
@@ -61,7 +78,10 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Error in create-user function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error.message,
+        details: error.stack 
+      }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 400,
