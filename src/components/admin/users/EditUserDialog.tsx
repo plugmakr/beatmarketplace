@@ -6,9 +6,10 @@ interface EditUserDialogProps {
   user: User | null;
   onClose: () => void;
   onSubmit: (data: UserFormData) => void;
+  isLoading?: boolean;
 }
 
-const EditUserDialog = ({ user, onClose, onSubmit }: EditUserDialogProps) => {
+const EditUserDialog = ({ user, onClose, onSubmit, isLoading }: EditUserDialogProps) => {
   if (!user) return null;
 
   return (
@@ -25,6 +26,7 @@ const EditUserDialog = ({ user, onClose, onSubmit }: EditUserDialogProps) => {
             role: user.role,
           }}
           onSubmit={onSubmit}
+          isLoading={isLoading}
         />
       </DialogContent>
     </Dialog>
