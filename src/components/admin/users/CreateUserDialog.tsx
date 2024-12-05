@@ -8,9 +8,10 @@ interface CreateUserDialogProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: UserFormData) => void;
+  isLoading?: boolean;
 }
 
-const CreateUserDialog = ({ isOpen, onOpenChange, onSubmit }: CreateUserDialogProps) => {
+const CreateUserDialog = ({ isOpen, onOpenChange, onSubmit, isLoading }: CreateUserDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -23,7 +24,11 @@ const CreateUserDialog = ({ isOpen, onOpenChange, onSubmit }: CreateUserDialogPr
         <DialogHeader>
           <DialogTitle className="text-yellow-500">Create New User</DialogTitle>
         </DialogHeader>
-        <UserForm type="create" onSubmit={onSubmit} />
+        <UserForm 
+          type="create" 
+          onSubmit={onSubmit} 
+          isLoading={isLoading}
+        />
       </DialogContent>
     </Dialog>
   );

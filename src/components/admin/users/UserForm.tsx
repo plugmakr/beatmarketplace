@@ -3,22 +3,29 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UserFormData } from "./types";
+import { useState } from "react";
 
 interface UserFormProps {
   defaultValues?: UserFormData;
   onSubmit: (data: UserFormData) => void;
   type: 'create' | 'edit';
+  isLoading?: boolean;
 }
 
-const UserForm = ({ defaultValues, onSubmit, type }: UserFormProps) => {
+const UserForm = ({ defaultValues, onSubmit, type, isLoading }: UserFormProps) => {
+  const [formData, setFormData] = useState<UserFormData>({
+    name: defaultValues?.name || '',
+    email: defaultValues?.email || '',
+    role: defaultValues?.role || 'artist',
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    onSubmit({
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      role: formData.get('role') as 'admin' | 'artist' | 'seller',
-    });
+    onSubmit(formData);
+  };
+
+  const handleChange = (field: keyof UserFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -28,7 +35,8 @@ const UserForm = ({ defaultValues, onSubmit, type }: UserFormProps) => {
         <Input 
           id="name" 
           name="name" 
-          defaultValue={defaultValues?.name}
+          value={formData.name}
+          onChange={(e) => handleChange('name', e.target.value)}
           className="bg-black/60 text-white" 
           required 
         />
@@ -39,14 +47,19 @@ const UserForm = ({ defaultValues, onSubmit, type }: UserFormProps) => {
           id="email" 
           name="email" 
           type="email" 
-          defaultValue={defaultValues?.email}
+          value={formData.email}
+          onChange={(e) => handleChange('email', e.target.value)}
           className="bg-black/60 text-white" 
           required 
         />
       </div>
       <div>
         <Label htmlFor="role" className="text-white">Role</Label>
-        <Select name="role" defaultValue={defaultValues?.role}>
+        <Select 
+          name="role" 
+          value={formData.role}
+          onValueChange={(value) => handleChange('role', value)}
+        >
           <SelectTrigger className="bg-black/60 text-white">
             <SelectValue placeholder="Select role" />
           </SelectTrigger>
@@ -57,8 +70,12 @@ const UserForm = ({ defaultValues, onSubmit, type }: UserFormProps) => {
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit" className="w-full bg-yellow-500 hover:bg-yellow-400 text-black">
-        {type === 'create' ? 'Create User' : 'Save Changes'}
+      <Button 
+        type="submit" 
+        className="w-full bg-yellow-500 hover:bg-yellow-400 text-black"
+        disabled={isLoading}
+      >
+        {isLoading ? 'Processing...' : type === 'create' ? 'Create User' : 'Save Changes'}
       </Button>
     </form>
   );

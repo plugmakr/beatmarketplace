@@ -39,6 +39,7 @@ const UsersTab = () => {
           isOpen={isCreateDialogOpen}
           onOpenChange={setIsCreateDialogOpen}
           onSubmit={handleCreateUser}
+          isLoading={createUser.isPending}
         />
       </CardHeader>
       <CardContent>
@@ -53,6 +54,7 @@ const UsersTab = () => {
         user={editingUser}
         onClose={() => setEditingUser(null)}
         onSubmit={handleUpdateUser}
+        isLoading={updateUser.isPending}
       />
     </Card>
   );

@@ -20,8 +20,8 @@ Deno.serve(async (req) => {
     const { email, password, name, role } = await req.json()
     console.log('Attempting to create user:', { email, name, role })
 
-    if (!email || !password) {
-      throw new Error('Email and password are required')
+    if (!email || !password || !name || !role) {
+      throw new Error('Email, password, name, and role are required')
     }
 
     // Create user in auth.users
