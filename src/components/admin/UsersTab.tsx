@@ -8,12 +8,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import UserTable from "./users/UserTable";
 import UserForm from "./users/UserForm";
-import { User, UserFormData } from "./users/types";
+import { User, UserFormData } from "./types";
 
 const UsersTab = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['users'],
@@ -39,6 +40,44 @@ const UsersTab = () => {
         joinDate: new Date(profile.created_at).toLocaleDateString(),
         lastLogin: new Date(profile.updated_at).toLocaleDateString(),
       }));
+    },
+  });
+
+  // Create user
+  const createUser = useMutation({
+    mutationFn: async (data: UserFormData) => {
+      console.log('Creating user:', data);
+      const { data: result, error } = await supabase.functions.invoke('create-user', {
+        body: {
+          email: data.email,
+          password: 'tempPass123!', // You might want to generate this randomly or ask for it in the form
+          name: data.name,
+          role: data.role,
+        },
+      });
+
+      if (error) {
+        console.error('Error creating user:', error);
+        throw error;
+      }
+
+      return result;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      toast({
+        title: "Success",
+        description: "User created successfully",
+      });
+      setIsCreateDialogOpen(false);
+    },
+    onError: (error) => {
+      console.error('Error creating user:', error);
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
     },
   });
 
@@ -106,6 +145,10 @@ const UsersTab = () => {
     },
   });
 
+  const handleCreateUser = (data: UserFormData) => {
+    createUser.mutate(data);
+  };
+
   const handleUpdateUser = (data: UserFormData) => {
     if (!editingUser) return;
     updateUser.mutate({ ...data, id: editingUser.id });
@@ -119,7 +162,7 @@ const UsersTab = () => {
     <Card className="bg-black/60 border border-yellow-500/20">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-yellow-500">User Management</CardTitle>
-        <Dialog>
+        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button className="bg-yellow-500 hover:bg-yellow-400 text-black">
               <UserPlus className="w-4 h-4 mr-2" />
@@ -130,7 +173,7 @@ const UsersTab = () => {
             <DialogHeader>
               <DialogTitle className="text-yellow-500">Create New User</DialogTitle>
             </DialogHeader>
-            <UserForm type="create" onSubmit={() => {}} />
+            <UserForm type="create" onSubmit={handleCreateUser} />
           </DialogContent>
         </Dialog>
       </CardHeader>
