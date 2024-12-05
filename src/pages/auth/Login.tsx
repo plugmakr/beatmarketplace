@@ -1,68 +1,76 @@
-import { Auth } from '@supabase/auth-ui-react';
-import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { Navigate, useLocation } from 'react-router-dom';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState, useEffect } from 'react';
-import { useToast } from '@/components/ui/use-toast';
-import { AuthChangeEvent } from '@supabase/supabase-js';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
-  const { session, profile } = useAuth();
-  const location = useLocation();
-  const [selectedRole, setSelectedRole] = useState<string>('artist');
+  const [selectedRole, setSelectedRole] = useState("artist");
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const { session, profile } = useAuth();
 
-  useEffect(() => {
-    console.log('Login component - Current session:', session);
-    console.log('Login component - Current profile:', profile);
+  console.log("Login component - Current session:", session);
+  console.log("Login component - Current profile:", profile);
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, currentSession) => {
-      console.log('Auth state changed:', event, currentSession);
-      
-      if (event === 'SIGNED_IN') {
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
-        });
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
+  // Redirect if already logged in
+  if (session && profile?.role) {
+    const portalRoutes: { [key: string]: string } = {
+      admin: '/admin',
+      seller: '/seller-portal',
+      artist: '/artist-portal'
     };
-  }, [toast]);
-
-  // If we have both session and profile, redirect to the appropriate portal
-  if (session && profile) {
-    const redirectPath = location.state?.from?.pathname || getDefaultRoute(profile.role);
-    console.log('Redirecting to:', redirectPath);
-    return <Navigate to={redirectPath} replace />;
+    
+    const route = portalRoutes[profile.role];
+    if (route) {
+      navigate(route);
+    }
   }
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-yellow-500">Welcome Back</h2>
-          <p className="mt-2 text-gray-400">Sign in to your account</p>
-        </div>
-        <div className="bg-black/60 border border-yellow-500/20 rounded-lg p-6">
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-400 mb-2">
-              Select Role for New Account
-            </label>
-            <Select value={selectedRole} onValueChange={setSelectedRole}>
-              <SelectTrigger className="bg-black/60 border-yellow-500/20">
-                <SelectValue placeholder="Select role" />
+    <div className="flex min-h-screen items-center justify-center bg-black p-4">
+      <Card className="w-full max-w-md border-yellow-500/20 bg-black text-white">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-200 bg-clip-text text-transparent">
+            Sign In
+          </CardTitle>
+          <CardDescription className="text-gray-400">
+            Sign in to your account or create a new one
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-4">
+            <Select
+              value={selectedRole}
+              onValueChange={(value) => setSelectedRole(value)}
+            >
+              <SelectTrigger className="w-full border-yellow-500/20 bg-black text-yellow-500">
+                <SelectValue placeholder="Select your role" />
               </SelectTrigger>
-              <SelectContent className="bg-black/90 border-yellow-500/20">
-                <SelectItem value="artist">Artist</SelectItem>
-                <SelectItem value="seller">Seller</SelectItem>
+              <SelectContent className="border-yellow-500/20 bg-black">
+                <SelectItem value="artist" className="text-yellow-500">Artist</SelectItem>
+                <SelectItem value="seller" className="text-yellow-500">Seller</SelectItem>
+                <SelectItem value="admin" className="text-yellow-500">Admin</SelectItem>
               </SelectContent>
             </Select>
           </div>
+
           <Auth
             supabaseClient={supabase}
             appearance={{
@@ -70,25 +78,14 @@ const Login = () => {
               variables: {
                 default: {
                   colors: {
-                    brand: '#eab308',
-                    brandAccent: '#ca8a04',
+                    brand: '#EAB308',
+                    brandAccent: '#CA8A04',
+                    inputBackground: 'black',
+                    inputText: 'white',
+                    inputBorder: 'rgba(234, 179, 8, 0.2)',
+                    inputBorderFocus: 'rgba(234, 179, 8, 0.5)',
+                    inputBorderHover: 'rgba(234, 179, 8, 0.3)',
                   },
-                },
-              },
-            }}
-            localization={{
-              variables: {
-                sign_in: {
-                  email_label: 'Email',
-                  password_label: 'Password',
-                  button_label: 'Sign in',
-                },
-                sign_up: {
-                  email_label: 'Email',
-                  password_label: 'Password',
-                  button_label: 'Sign up',
-                  link_text: "Don't have an account? Sign up",
-                  confirmation_text: 'Check your email for the confirmation link',
                 },
               },
             }}
@@ -100,23 +97,10 @@ const Login = () => {
               role: selectedRole
             }}
           />
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
-
-function getDefaultRoute(role: string | null) {
-  switch (role) {
-    case 'admin':
-      return '/admin';
-    case 'seller':
-      return '/seller-portal';
-    case 'artist':
-      return '/artist-portal';
-    default:
-      return '/';
-  }
-}
 
 export default Login;
