@@ -80,11 +80,13 @@ const UsersTab = () => {
     mutationFn: async (userId: string) => {
       console.log('Deleting user:', userId);
       
-      // Call the Edge Function to delete the user
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`, {
+      const supabaseUrl = supabase.supabaseUrl;
+      console.log('Supabase URL:', supabaseUrl); // Debug log
+      
+      const response = await fetch(`${supabaseUrl}/functions/v1/delete-user`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${supabase.supabaseKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ userId }),
