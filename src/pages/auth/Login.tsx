@@ -94,6 +94,8 @@ const Login = () => {
             }}
             providers={[]}
             redirectTo={`${window.location.origin}/auth/callback`}
+            onlyThirdPartyProviders={false}
+            magicLink={false}
             additionalData={{
               role: selectedRole
             }}
