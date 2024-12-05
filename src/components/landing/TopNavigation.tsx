@@ -2,6 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { User } from "lucide-react";
 
 const TopNavigation = () => {
   const navigate = useNavigate();
@@ -28,40 +36,13 @@ const TopNavigation = () => {
   const getPortalLink = () => {
     if (!profile?.role) return null;
     
-    switch (profile.role) {
-      case 'admin':
-        return (
-          <Button 
-            variant="ghost" 
-            className="text-yellow-500 hover:text-yellow-400"
-            onClick={() => navigate('/admin')}
-          >
-            Admin Portal
-          </Button>
-        );
-      case 'seller':
-        return (
-          <Button 
-            variant="ghost" 
-            className="text-yellow-500 hover:text-yellow-400"
-            onClick={() => navigate('/seller-portal')}
-          >
-            Seller Portal
-          </Button>
-        );
-      case 'artist':
-        return (
-          <Button 
-            variant="ghost" 
-            className="text-yellow-500 hover:text-yellow-400"
-            onClick={() => navigate('/artist-portal')}
-          >
-            Artist Portal
-          </Button>
-        );
-      default:
-        return null;
-    }
+    const portalRoutes = {
+      admin: '/admin',
+      seller: '/seller-portal',
+      artist: '/artist-portal'
+    };
+
+    return portalRoutes[profile.role as keyof typeof portalRoutes] || null;
   };
 
   return (
@@ -90,22 +71,34 @@ const TopNavigation = () => {
                 How it Works
               </Button>
             </Link>
-            <Link to="#pricing">
+            <Link to="/pricing">
               <Button variant="ghost" className="text-yellow-500 hover:text-yellow-400">
                 Pricing
               </Button>
             </Link>
             
-            {session && getPortalLink()}
-
             {session ? (
-              <Button 
-                variant="ghost" 
-                className="text-red-500 hover:text-red-400"
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-yellow-500 hover:text-yellow-400">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-black border-yellow-500/20">
+                  {profile?.role && (
+                    <>
+                      <DropdownMenuItem onClick={() => navigate(getPortalLink()!)}>
+                        {profile.role.charAt(0).toUpperCase() + profile.role.slice(1)} Dashboard
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  <DropdownMenuItem className="text-red-500" onClick={handleSignOut}>
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Link to="/auth/login">
                 <Button variant="ghost" className="text-yellow-500 hover:text-yellow-400">
