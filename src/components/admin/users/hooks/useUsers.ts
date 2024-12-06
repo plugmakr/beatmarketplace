@@ -9,7 +9,13 @@ export const useUsers = () => {
       console.log('Fetching users...');
       const { data: profiles, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select(`
+          id,
+          username,
+          role,
+          created_at,
+          updated_at
+        `)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -21,7 +27,7 @@ export const useUsers = () => {
       return profiles.map((profile): User => ({
         id: profile.id,
         name: profile.username || '',
-        email: '',
+        email: profile.username || '', // Using username as email since that's how we store it
         role: profile.role as 'admin' | 'artist' | 'seller',
         status: 'active',
         joinDate: new Date(profile.created_at).toLocaleDateString(),
