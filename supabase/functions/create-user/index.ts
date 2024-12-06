@@ -6,7 +6,6 @@ const corsHeaders = {
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
   }
@@ -35,7 +34,6 @@ Deno.serve(async (req) => {
       email,
       password,
       email_confirm: true,
-      user_metadata: { role }
     })
 
     if (createError) {
@@ -47,21 +45,23 @@ Deno.serve(async (req) => {
       throw new Error('User creation succeeded but no user was returned')
     }
 
-    // Update the profile with the username
-    const { error: updateError } = await supabaseAdmin
+    // Insert into profiles table
+    const { error: profileError } = await supabaseAdmin
       .from('profiles')
-      .update({ 
-        username: name, 
-        role,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', userData.user.id)
+      .insert([
+        { 
+          id: userData.user.id,
+          username: name,
+          role: role,
+          updated_at: new Date().toISOString()
+        }
+      ])
 
-    if (updateError) {
-      console.error('Error updating profile:', updateError)
-      // If profile update fails, we should clean up the auth user
+    if (profileError) {
+      console.error('Error creating profile:', profileError)
+      // Clean up the auth user if profile creation fails
       await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
-      throw new Error(`Profile error: ${updateError.message}`)
+      throw new Error(`Profile error: ${profileError.message}`)
     }
 
     console.log('User created successfully:', userData.user.id)
