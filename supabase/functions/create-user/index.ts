@@ -45,23 +45,24 @@ Deno.serve(async (req) => {
       throw new Error('User creation succeeded but no user was returned')
     }
 
-    // Insert into profiles table
-    const { error: profileError } = await supabaseAdmin
-      .from('profiles')
-      .insert([
-        { 
-          id: userData.user.id,
-          username: name,
-          role: role,
-          updated_at: new Date().toISOString()
-        }
-      ])
+    // Wait a bit for the trigger to create the profile
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
-    if (profileError) {
-      console.error('Error creating profile:', profileError)
-      // Clean up the auth user if profile creation fails
+    // Update the profile with the username and role
+    const { error: updateError } = await supabaseAdmin
+      .from('profiles')
+      .update({ 
+        username: name,
+        role: role,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', userData.user.id)
+
+    if (updateError) {
+      console.error('Error updating profile:', updateError)
+      // If profile update fails, we should clean up the auth user
       await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
-      throw new Error(`Profile error: ${profileError.message}`)
+      throw new Error(`Profile error: ${updateError.message}`)
     }
 
     console.log('User created successfully:', userData.user.id)
