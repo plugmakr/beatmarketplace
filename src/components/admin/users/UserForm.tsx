@@ -17,6 +17,7 @@ const UserForm = ({ defaultValues, onSubmit, type, isLoading }: UserFormProps) =
     name: defaultValues?.name || '',
     email: defaultValues?.email || '',
     role: defaultValues?.role || 'artist',
+    password: defaultValues?.password || '',
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,6 +54,21 @@ const UserForm = ({ defaultValues, onSubmit, type, isLoading }: UserFormProps) =
           required 
         />
       </div>
+      {type === 'create' && (
+        <div>
+          <Label htmlFor="password" className="text-white">Password</Label>
+          <Input 
+            id="password" 
+            name="password" 
+            type="password" 
+            value={formData.password}
+            onChange={(e) => handleChange('password', e.target.value)}
+            className="bg-black/60 text-white" 
+            required 
+            minLength={8}
+          />
+        </div>
+      )}
       <div>
         <Label htmlFor="role" className="text-white">Role</Label>
         <Select 

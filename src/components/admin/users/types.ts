@@ -12,4 +12,5 @@ export interface UserFormData {
   name: string;
   email: string;
   role: 'admin' | 'artist' | 'seller';
+  password?: string;
 }

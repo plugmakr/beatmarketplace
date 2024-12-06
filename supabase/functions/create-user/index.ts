@@ -29,11 +29,15 @@ Deno.serve(async (req) => {
       throw new Error('Email, password, name, and role are required')
     }
 
-    // Create user in auth.users
+    // Create user in auth.users with the provided password
     const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
+      user_metadata: {
+        username: name,
+        role: role
+      }
     })
 
     if (createError) {
