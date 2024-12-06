@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -29,19 +29,50 @@ const Login = () => {
   console.log("Login component - Current session:", session);
   console.log("Login component - Current profile:", profile);
 
-  // Redirect if already logged in
-  if (session && profile?.role) {
-    const portalRoutes: { [key: string]: string } = {
-      admin: '/admin',
-      seller: '/seller-portal',
-      artist: '/artist-portal'
+  useEffect(() => {
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+      console.log("Auth state changed:", event, currentSession);
+      
+      if (event === 'SIGNED_IN' && currentSession) {
+        console.log("User signed in successfully");
+        // Redirect based on role after successful sign in
+        if (profile?.role) {
+          const portalRoutes: { [key: string]: string } = {
+            admin: '/admin',
+            seller: '/seller-portal',
+            artist: '/artist-portal'
+          };
+          
+          const route = portalRoutes[profile.role];
+          if (route) {
+            navigate(route);
+          }
+        }
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
     };
-    
-    const route = portalRoutes[profile.role];
-    if (route) {
-      navigate(route);
+  }, [navigate, profile]);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (session && profile?.role) {
+      console.log("User already logged in, redirecting...");
+      const portalRoutes: { [key: string]: string } = {
+        admin: '/admin',
+        seller: '/seller-portal',
+        artist: '/artist-portal'
+      };
+      
+      const route = portalRoutes[profile.role];
+      if (route) {
+        navigate(route);
+      }
     }
-  }
+  }, [session, profile, navigate]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
@@ -93,6 +124,14 @@ const Login = () => {
             redirectTo={`${window.location.origin}/auth/callback`}
             onlyThirdPartyProviders={false}
             magicLink={false}
+            localization={{
+              variables: {
+                sign_in: {
+                  email_label: 'Email',
+                  password_label: 'Password',
+                }
+              }
+            }}
             additionalData={{
               role: selectedRole
             }}
