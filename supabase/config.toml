@@ -1,5 +1,1 @@
-project_id = "eshjpvlafdpzobmjlcfv"
-[functions.delete-user]
-verify_jwt = true
-[functions.create-user]
-verify_jwt = true
+project_id = "yqmdtooyfzwcxracbgsc"
