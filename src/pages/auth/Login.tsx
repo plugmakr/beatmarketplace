@@ -30,6 +30,7 @@ const Login = () => {
   const { session } = useAuth();
 
   useEffect(() => {
+    console.log("Setting up auth state change listener");
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log("Auth state changed:", event, session);
       
@@ -114,7 +115,7 @@ const Login = () => {
               },
             }}
             providers={[]}
-            redirectTo={window.location.origin + '/auth/callback'}
+            redirectTo={`${window.location.origin}/auth/callback`}
             onlyThirdPartyProviders={false}
             magicLink={false}
             localization={{
