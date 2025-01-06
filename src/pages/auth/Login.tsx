@@ -41,13 +41,18 @@ const Login = () => {
           description: "You have successfully signed in.",
         });
         
-        // Get the intended destination from location state, or default to home
         const destination = location.state?.from?.pathname || '/';
         navigate(destination);
       }
 
       if (event === 'SIGNED_OUT') {
         setError(null);
+      }
+
+      // Handle signup errors
+      if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
+        console.error("Error during signup/signin");
+        setError("An error occurred during the signup process. Please try again.");
       }
     });
 
@@ -61,6 +66,11 @@ const Login = () => {
       navigate('/');
     }
   }, [session, navigate]);
+
+  const handleRoleChange = (value: string) => {
+    console.log("Selected role:", value);
+    setSelectedRole(value);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
@@ -83,7 +93,7 @@ const Login = () => {
           <div className="mb-4">
             <Select
               value={selectedRole}
-              onValueChange={(value) => setSelectedRole(value)}
+              onValueChange={handleRoleChange}
             >
               <SelectTrigger className="w-full border-yellow-500/20 bg-black text-yellow-500">
                 <SelectValue placeholder="Select your role" />
@@ -127,6 +137,9 @@ const Login = () => {
               }
             }}
             theme="dark"
+            additionalData={{
+              role: selectedRole
+            }}
           />
         </CardContent>
       </Card>
