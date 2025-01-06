@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,45 +17,41 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [selectedRole, setSelectedRole] = useState("artist");
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { session, profile } = useAuth();
 
-  console.log("Login component - Current session:", session);
-  console.log("Login component - Current profile:", profile);
-
   useEffect(() => {
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
-      console.log("Auth state changed:", event, currentSession);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("Auth state changed:", event, session);
       
-      if (event === 'SIGNED_IN' && currentSession) {
+      if (event === 'SIGNED_IN' && session) {
         console.log("User signed in successfully");
-        // Redirect based on role after successful sign in
-        if (profile?.role) {
-          const portalRoutes: { [key: string]: string } = {
-            admin: '/admin',
-            seller: '/seller-portal',
-            artist: '/artist-portal'
-          };
-          
-          const route = portalRoutes[profile.role];
-          if (route) {
-            navigate(route);
-          }
-        }
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in.",
+        });
+        
+        // Get the intended destination from location state, or default to home
+        const destination = location.state?.from?.pathname || '/';
+        navigate(destination);
+      }
+
+      if (event === 'SIGNED_OUT') {
+        setError(null);
       }
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [navigate, profile]);
+    return () => subscription.unsubscribe();
+  }, [navigate, location, toast]);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -67,10 +63,8 @@ const Login = () => {
         artist: '/artist-portal'
       };
       
-      const route = portalRoutes[profile.role];
-      if (route) {
-        navigate(route);
-      }
+      const route = portalRoutes[profile.role] || '/';
+      navigate(route);
     }
   }, [session, profile, navigate]);
 
@@ -86,6 +80,12 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          
           <div className="mb-4">
             <Select
               value={selectedRole}

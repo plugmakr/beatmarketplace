@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Session, User } from '@supabase/supabase-js';
+import { Session, User, AuthError } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
@@ -35,28 +35,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .single();
 
       if (profileError) {
-        if (profileError.code === 'PGRST116') {
-          console.log('No profile found, creating default profile...');
-          const { data: newProfile, error: insertError } = await supabase
-            .from('profiles')
-            .insert([{ id: userId, role: 'artist' }])
-            .select()
-            .single();
-
-          if (insertError) {
-            console.error('Error creating default profile:', insertError);
-            toast({
-              title: "Error",
-              description: "Failed to create profile",
-              variant: "destructive"
-            });
-            return;
-          }
-
-          setProfile(newProfile);
-          return;
-        }
-
         console.error('Error fetching profile:', profileError);
         toast({
           title: "Error",
@@ -114,16 +92,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to sign out",
-          variant: "destructive"
-        });
-        return;
-      }
+      if (error) throw error;
+      
       setProfile(null);
-      navigate('/');
+      navigate('/auth/login');
+      
+      toast({
+        title: "Signed out successfully",
+        description: "You have been logged out of your account.",
+      });
     } catch (error) {
       console.error('Error signing out:', error);
       toast({
