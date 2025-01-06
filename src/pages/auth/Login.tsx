@@ -27,7 +27,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
-  const { session, profile } = useAuth();
+  const { session } = useAuth();
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -36,7 +36,7 @@ const Login = () => {
       if (event === 'SIGNED_IN' && session) {
         console.log("User signed in successfully");
         toast({
-          title: "Welcome back!",
+          title: "Welcome!",
           description: "You have successfully signed in.",
         });
         
@@ -55,18 +55,11 @@ const Login = () => {
 
   // Redirect if already logged in
   useEffect(() => {
-    if (session && profile?.role) {
+    if (session) {
       console.log("User already logged in, redirecting...");
-      const portalRoutes: { [key: string]: string } = {
-        admin: '/admin',
-        seller: '/seller-portal',
-        artist: '/artist-portal'
-      };
-      
-      const route = portalRoutes[profile.role] || '/';
-      navigate(route);
+      navigate('/');
     }
-  }, [session, profile, navigate]);
+  }, [session, navigate]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
@@ -121,7 +114,7 @@ const Login = () => {
               },
             }}
             providers={[]}
-            redirectTo={`${window.location.origin}/auth/callback`}
+            redirectTo={window.location.origin + '/auth/callback'}
             onlyThirdPartyProviders={false}
             magicLink={false}
             localization={{
@@ -132,9 +125,7 @@ const Login = () => {
                 }
               }
             }}
-            additionalData={{
-              role: selectedRole
-            }}
+            theme="dark"
           />
         </CardContent>
       </Card>
