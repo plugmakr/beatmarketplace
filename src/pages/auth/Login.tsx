@@ -35,7 +35,7 @@ const Login = () => {
       console.log("Auth state changed:", event, session);
       
       if (event === 'SIGNED_IN' && session) {
-        console.log("User signed in successfully");
+        console.log("User signed in successfully:", session);
         toast({
           title: "Welcome!",
           description: "You have successfully signed in.",
@@ -49,12 +49,25 @@ const Login = () => {
         setError(null);
       }
 
-      // Handle signup errors
-      if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
-        console.error("Error during signup/signin");
-        setError("An error occurred during the signup process. Please try again.");
+      // Enhanced error handling
+      if (event === 'USER_DELETED') {
+        console.error("User deletion event received");
+        setError("An error occurred during account creation. Please try again.");
       }
     });
+
+    // Log any existing session
+    const checkSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("Error checking session:", error);
+      }
+      if (session) {
+        console.log("Existing session found:", session);
+      }
+    };
+
+    checkSession();
 
     return () => subscription.unsubscribe();
   }, [navigate, location, toast]);
@@ -70,6 +83,8 @@ const Login = () => {
   const handleRoleChange = (value: string) => {
     console.log("Selected role:", value);
     setSelectedRole(value);
+    // Clear any previous errors when role changes
+    setError(null);
   };
 
   return (
@@ -138,7 +153,8 @@ const Login = () => {
             }}
             theme="dark"
             additionalData={{
-              role: selectedRole
+              role: selectedRole,
+              username: '' // Add an empty username that will be updated later
             }}
           />
         </CardContent>
