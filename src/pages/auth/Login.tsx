@@ -49,10 +49,9 @@ const Login = () => {
         setError(null);
       }
 
-      // Enhanced error handling
-      if (event === 'USER_DELETED') {
-        console.error("User deletion event received");
-        setError("An error occurred during account creation. Please try again.");
+      // Enhanced error handling for authentication errors
+      if (event === 'INITIAL_SESSION' && !session) {
+        console.error("No initial session found");
       }
     });
 
