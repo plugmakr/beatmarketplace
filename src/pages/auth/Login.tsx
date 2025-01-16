@@ -86,6 +86,9 @@ const Login = () => {
     setError(null);
   };
 
+  // Get the current origin for the redirect URL
+  const redirectTo = `${window.location.origin}/auth/callback`;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
       <Card className="w-full max-w-md border-yellow-500/20 bg-black text-white">
@@ -139,7 +142,7 @@ const Login = () => {
               },
             }}
             providers={[]}
-            redirectTo={`${window.location.origin}/auth/callback`}
+            redirectTo={redirectTo}
             onlyThirdPartyProviders={false}
             magicLink={false}
             localization={{
