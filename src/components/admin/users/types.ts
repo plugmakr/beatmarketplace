@@ -14,3 +14,11 @@ export interface UserFormData {
   role: 'admin' | 'artist' | 'seller';
   password?: string;
 }
+
+export interface Profile {
+  id: string;
+  username: string | null;
+  role: 'admin' | 'artist' | 'seller';
+  created_at: string;
+  updated_at: string;
+}

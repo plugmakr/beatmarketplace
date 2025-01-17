@@ -13,7 +13,7 @@ export const useUserMutations = () => {
       const { data: result, error } = await supabase.functions.invoke('create-user', {
         body: {
           email: data.email,
-          password: 'tempPass123!',
+          password: data.password || 'tempPass123!',
           name: data.name,
           role: data.role,
         },

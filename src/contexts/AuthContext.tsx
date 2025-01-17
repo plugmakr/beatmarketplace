@@ -1,14 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Session, User, AuthError } from '@supabase/supabase-js';
+import { Session, AuthError } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
-
-interface Profile {
-  id: string;
-  username: string | null;
-  role: string | null;
-}
+import { Profile } from '@/components/admin/users/types';
 
 interface AuthContextType {
   session: Session | null;
@@ -30,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('id, username, role')
+        .select('*')
         .eq('id', userId)
         .single();
 
