@@ -18,15 +18,20 @@ import ArtistPortal from "./pages/ArtistPortal";
 import SellerPortal from "./pages/SellerPortal";
 import Pricing from "./pages/Pricing";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <AuthProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/browse-beats" element={<BrowseBeats />} />
@@ -55,7 +60,12 @@ const App = () => (
               </ProtectedRoute>
             } />
             <Route path="/pricing" element={<Pricing />} />
+            
+            {/* Catch all route */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <Toaster />
+          <Sonner />
         </TooltipProvider>
       </AuthProvider>
     </BrowserRouter>
