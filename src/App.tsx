@@ -27,49 +27,63 @@ const queryClient = new QueryClient({
   },
 });
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <AuthProvider>
-        <TooltipProvider>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/browse-beats" element={<BrowseBeats />} />
-            <Route path="/browse-kits" element={<BrowseKits />} />
-            <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/beats/:id" element={<BeatDetails />} />
-            <Route path="/kits/:id" element={<KitDetails />} />
-            <Route path="/seller/:id" element={<ArtistProfile />} />
-            <Route path="/artists/:id" element={<ArtistProfile />} />
-            <Route path="/auth/login" element={<Login />} />
-            
-            {/* Protected Routes */}
-            <Route path="/admin" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <AdminPortal />
-              </ProtectedRoute>
-            } />
-            <Route path="/artist-portal" element={
-              <ProtectedRoute allowedRoles={['artist']}>
-                <ArtistPortal />
-              </ProtectedRoute>
-            } />
-            <Route path="/seller-portal" element={
-              <ProtectedRoute allowedRoles={['seller']}>
-                <SellerPortal />
-              </ProtectedRoute>
-            } />
-            <Route path="/pricing" element={<Pricing />} />
-            
-            {/* Catch all route */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-          <Toaster />
-          <Sonner />
-        </TooltipProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <TooltipProvider>
+            <div className="min-h-screen bg-black">
+              <Routes>
+                {/* Public Routes */}
+                <Route index element={<Index />} />
+                <Route path="/browse-beats" element={<BrowseBeats />} />
+                <Route path="/browse-kits" element={<BrowseKits />} />
+                <Route path="/how-it-works" element={<HowItWorks />} />
+                <Route path="/beats/:id" element={<BeatDetails />} />
+                <Route path="/kits/:id" element={<KitDetails />} />
+                <Route path="/seller/:id" element={<ArtistProfile />} />
+                <Route path="/artists/:id" element={<ArtistProfile />} />
+                <Route path="/auth/login" element={<Login />} />
+                <Route path="/pricing" element={<Pricing />} />
+
+                {/* Protected Routes */}
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute allowedRoles={["admin"]}>
+                      <AdminPortal />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/artist-portal"
+                  element={
+                    <ProtectedRoute allowedRoles={["artist"]}>
+                      <ArtistPortal />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/seller-portal"
+                  element={
+                    <ProtectedRoute allowedRoles={["seller"]}>
+                      <SellerPortal />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Catch-all route */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+              <Toaster />
+              <Sonner />
+            </div>
+          </TooltipProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
