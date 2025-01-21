@@ -33,7 +33,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState<"buyer" | "seller" | "admin">("buyer");
+  const [role, setRole] = useState<'admin' | 'artist' | 'seller'>('seller');
 
   // Redirect if already logged in
   if (session && profile) {
@@ -50,6 +50,7 @@ const Login = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log('Attempting signup with:', { email, name, role });
 
     try {
       const { error } = await supabase.auth.signUp({
@@ -70,6 +71,7 @@ const Login = () => {
         description: "Please check your email to verify your account.",
       });
     } catch (error: any) {
+      console.error('Signup error:', error);
       toast({
         title: "Error",
         description: error.message,
@@ -190,17 +192,15 @@ const Login = () => {
                   <Label htmlFor="role">Role</Label>
                   <Select
                     value={role}
-                    onValueChange={(value: "buyer" | "seller" | "admin") =>
-                      setRole(value)
-                    }
+                    onValueChange={(value: 'admin' | 'artist' | 'seller') => setRole(value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="buyer">Buyer</SelectItem>
-                      <SelectItem value="seller">Seller</SelectItem>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="artist">Artist</SelectItem>
+                      <SelectItem value="seller">Seller</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
