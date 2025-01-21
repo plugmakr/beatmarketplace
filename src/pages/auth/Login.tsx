@@ -53,7 +53,7 @@ const Login = () => {
     console.log('Attempting signup with:', { email, name, role });
 
     try {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -66,15 +66,17 @@ const Login = () => {
 
       if (error) throw error;
 
-      toast({
-        title: "Account created successfully!",
-        description: "Please check your email to verify your account.",
-      });
+      if (data) {
+        toast({
+          title: "Account created successfully!",
+          description: "Please check your email to verify your account.",
+        });
+      }
     } catch (error: any) {
       console.error('Signup error:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "An error occurred during signup",
         variant: "destructive",
       });
     } finally {
@@ -186,6 +188,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    minLength={6}
                   />
                 </div>
                 <div className="space-y-2">
