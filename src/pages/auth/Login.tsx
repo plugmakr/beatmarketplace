@@ -51,13 +51,13 @@ const Login = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log('Attempting signup with:', { email, name, role });
+    console.log('Attempting signup with:', { email, name, role, password }); // Added password to log
 
     try {
       const { data, error } = await supabase.functions.invoke('create-user', {
         body: {
           email,
-          password,
+          password, // This was missing in the request
           name,
           role,
         },
