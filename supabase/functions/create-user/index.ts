@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
 
     // Parse and validate request body
     const { email, password, name, role } = await req.json()
-    console.log('Received request with data:', { email, name, role }) // Log incoming data
+    console.log('Starting user creation process for:', { email, name, role })
 
     if (!email || !password || !name || !role) {
       throw new Error('Email, password, name, and role are required')
@@ -42,6 +42,12 @@ Deno.serve(async (req) => {
     }
 
     try {
+      // First, check if user already exists
+      const { data: existingUser } = await supabaseAdmin.auth.admin.getUserByEmail(email)
+      if (existingUser) {
+        throw new Error('User with this email already exists')
+      }
+
       // Create the user with admin API
       const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
         email,
@@ -54,36 +60,54 @@ Deno.serve(async (req) => {
       })
 
       if (createError) {
-        console.error('User creation error:', createError)
+        console.error('User creation failed:', createError)
         throw createError
       }
 
       if (!userData?.user) {
-        throw new Error('User creation succeeded but no user was returned')
+        throw new Error('User creation succeeded but no user data was returned')
       }
 
-      console.log('User created successfully:', userData.user.id)
+      // Wait a moment for the trigger to complete
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      // Verify profile creation
+      const { data: profile, error: profileError } = await supabaseAdmin
+        .from('profiles')
+        .select('*')
+        .eq('id', userData.user.id)
+        .single()
+
+      if (profileError || !profile) {
+        console.error('Profile verification failed:', profileError)
+        // Clean up the created user if profile creation failed
+        await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
+        throw new Error('Failed to create user profile')
+      }
+
+      console.log('User and profile created successfully:', userData.user.id)
 
       return new Response(
         JSON.stringify({
           message: 'User created successfully',
-          user: userData.user
+          user: userData.user,
+          profile
         }),
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
           status: 200,
         }
       )
-    } catch (authError: any) {
-      console.error('Detailed auth error:', authError)
-      throw new Error(`Auth error: ${authError.message}`)
+    } catch (specificError: any) {
+      console.error('Specific error in user creation:', specificError)
+      throw new Error(specificError.message || 'Error creating user')
     }
   } catch (error) {
     console.error('Error in create-user function:', error)
     return new Response(
       JSON.stringify({
-        error: error.message,
-        details: error instanceof Error ? error.stack : 'Unknown error'
+        error: error instanceof Error ? error.message : 'Unknown error',
+        details: error instanceof Error ? error.stack : 'No stack trace available'
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
