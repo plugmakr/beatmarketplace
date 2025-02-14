@@ -12,25 +12,36 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
+    // Initialize Supabase client with admin rights
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
 
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Missing environment variables')
+    }
+
+    const supabaseAdmin = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
+
+    // Parse and validate request body
     const { email, password, name, role } = await req.json()
-    console.log('Attempting to create user:', { email, name, role })
+    console.log('Received request to create user:', { email, name, role })
 
     if (!email || !password || !name || !role) {
       throw new Error('Email, password, name, and role are required')
     }
 
-    // Create user in auth.users with the provided password
+    // Validate role
+    const validRoles = ['admin', 'artist', 'seller']
+    if (!validRoles.includes(role)) {
+      throw new Error(`Invalid role. Must be one of: ${validRoles.join(', ')}`)
+    }
+
+    // Create the user with admin API
     const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -42,18 +53,20 @@ Deno.serve(async (req) => {
     })
 
     if (createError) {
-      console.error('Error creating auth user:', createError)
+      console.error('Detailed create user error:', createError)
       throw new Error(`Auth error: ${createError.message}`)
     }
 
-    if (!userData.user) {
+    if (!userData?.user) {
       throw new Error('User creation succeeded but no user was returned')
     }
 
-    // Wait a bit for the trigger to create the profile
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    console.log('User created successfully in auth:', userData.user.id)
 
-    // Update the profile with the username and role
+    // Allow some time for the trigger to create the profile
+    await new Promise(resolve => setTimeout(resolve, 2000))
+
+    // Update the profile
     const { error: updateError } = await supabaseAdmin
       .from('profiles')
       .update({ 
@@ -65,12 +78,16 @@ Deno.serve(async (req) => {
 
     if (updateError) {
       console.error('Error updating profile:', updateError)
-      // If profile update fails, we should clean up the auth user
-      await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
+      // Clean up the auth user if profile update fails
+      const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
+      if (deleteError) {
+        console.error('Error cleaning up auth user after profile update failure:', deleteError)
+      }
       throw new Error(`Profile error: ${updateError.message}`)
     }
 
-    console.log('User created successfully:', userData.user.id)
+    console.log('Profile updated successfully for user:', userData.user.id)
+    
     return new Response(
       JSON.stringify({ 
         message: 'User created successfully', 
