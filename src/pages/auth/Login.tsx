@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -53,14 +54,12 @@ const Login = () => {
     console.log('Attempting signup with:', { email, name, role });
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username: name,
-            role: role,
-          },
+      const { data, error } = await supabase.functions.invoke('create-user', {
+        body: {
+          email,
+          password,
+          name,
+          role,
         },
       });
 
@@ -69,7 +68,7 @@ const Login = () => {
       if (data) {
         toast({
           title: "Account created successfully!",
-          description: "Please check your email to verify your account.",
+          description: "Please sign in with your credentials.",
         });
       }
     } catch (error: any) {
