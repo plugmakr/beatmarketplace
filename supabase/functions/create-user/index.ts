@@ -41,7 +41,7 @@ Deno.serve(async (req) => {
       throw new Error(`Invalid role. Must be one of: ${validRoles.join(', ')}`)
     }
 
-    // Create the user with admin API
+    // Create the user with admin API, including all metadata needed for the trigger
     const { data: userData, error: createError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password,
@@ -62,32 +62,8 @@ Deno.serve(async (req) => {
     }
 
     console.log('User created successfully in auth:', userData.user.id)
-
-    // Allow some time for the trigger to create the profile
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
-    // Update the profile
-    const { error: updateError } = await supabaseAdmin
-      .from('profiles')
-      .update({ 
-        username: name,
-        role: role,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', userData.user.id)
-
-    if (updateError) {
-      console.error('Error updating profile:', updateError)
-      // Clean up the auth user if profile update fails
-      const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userData.user.id)
-      if (deleteError) {
-        console.error('Error cleaning up auth user after profile update failure:', deleteError)
-      }
-      throw new Error(`Profile error: ${updateError.message}`)
-    }
-
-    console.log('Profile updated successfully for user:', userData.user.id)
     
+    // Return success - the trigger will handle profile creation
     return new Response(
       JSON.stringify({ 
         message: 'User created successfully', 
