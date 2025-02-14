@@ -51,13 +51,12 @@ const Login = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log('Attempting signup with:', { email, name, role, password }); // Added password to log
-
+    
     try {
       const { data, error } = await supabase.functions.invoke('create-user', {
         body: {
           email,
-          password, // This was missing in the request
+          password,
           name,
           role,
         },
@@ -68,14 +67,20 @@ const Login = () => {
       if (data) {
         toast({
           title: "Account created successfully!",
-          description: "Please sign in with your credentials.",
+          description: "You can now sign in with your credentials.",
+          variant: "default",
         });
+        // Clear form fields after successful signup
+        setEmail("");
+        setPassword("");
+        setName("");
+        setRole('seller');
       }
     } catch (error: any) {
       console.error('Signup error:', error);
       toast({
-        title: "Error",
-        description: error.message || "An error occurred during signup",
+        title: "Error creating account",
+        description: error.message || "An error occurred during signup. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -94,10 +99,15 @@ const Login = () => {
       });
 
       if (error) throw error;
+
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Error signing in",
+        description: error.message || "Invalid email or password",
         variant: "destructive",
       });
     } finally {
