@@ -53,7 +53,7 @@ const Login = () => {
     setIsLoading(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('create-user', {
+      const { data, error: funcError } = await supabase.functions.invoke('create-user', {
         body: {
           email,
           password,
@@ -62,20 +62,37 @@ const Login = () => {
         },
       });
 
-      if (error) throw error;
-
-      if (data) {
-        toast({
-          title: "Account created successfully!",
-          description: "You can now sign in with your credentials.",
-          variant: "default",
-        });
-        // Clear form fields after successful signup
-        setEmail("");
-        setPassword("");
-        setName("");
-        setRole('seller');
+      if (funcError) {
+        console.error('Function error:', funcError);
+        throw new Error(funcError.message || 'Error creating user');
       }
+
+      if (!data) {
+        throw new Error('No data returned from create-user function');
+      }
+
+      toast({
+        title: "Account created successfully!",
+        description: "You can now sign in with your credentials.",
+        variant: "default",
+      });
+
+      // Clear form fields after successful signup
+      setEmail("");
+      setPassword("");
+      setName("");
+      setRole('seller');
+
+      // Automatically sign in after successful registration
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        throw signInError;
+      }
+
     } catch (error: any) {
       console.error('Signup error:', error);
       toast({
@@ -210,7 +227,6 @@ const Login = () => {
                       <SelectValue placeholder="Select your role" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
                       <SelectItem value="artist">Artist</SelectItem>
                       <SelectItem value="seller">Seller</SelectItem>
                     </SelectContent>
